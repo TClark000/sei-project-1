@@ -3,8 +3,6 @@ function init() {
   
   //elements
   const grid = document.querySelector('.grid')
-  // const gridCells = document.querySelectorAll('.grid')
-  // console.log(gridCells)
 
   //classes
   class Infrastructure {
@@ -30,11 +28,25 @@ function init() {
   const gridCellCount = width * width
   const cells = []
 
-  const arrInfra = ['wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall']
+  const arrInfra = [
+    'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
+    'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
+    'wall', 'wall', 'emptySpace','wall','wall','wall','wall','secretPassage','wall','emptySpace','wall', 'wall',
+    'emptySpace','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','emptySpace',
+    'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
+    'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
+    'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
+    'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
+    'emptySpace','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','emptySpace',
+    'wall', 'wall', 'emptySpace','wall','secretPassage','wall','wall','wall','wall','emptySpace','wall', 'wall',
+    'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
+    'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
+  ]
 
   const wall = new Infrastructure('wall', 'wall', true)
-  const path = new Infrastructure ('emptySpace', 'path' , false)
+  const path = new Infrastructure('emptySpace', 'path' , false)
   const secretPassage = new Infrastructure('secretPassage', 'wall', false)
+
   const redVirus = new Virus('fast', 'redVirus', 'red' )
 
   //functions
@@ -56,8 +68,7 @@ function init() {
 
   createGrid()
   addInfrastructure()
-  const gridCells = document.querySelectorAll('.grid')
-  console.log(gridCells)
+  console.log(cells)
 
   //listeners
 
