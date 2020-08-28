@@ -36,3 +36,8 @@ body {
 .secretPassage {
   background-color: palevioletred;
 }
+
+.character {
+  border: none;
+  background: url("") no-repeat center;
+}

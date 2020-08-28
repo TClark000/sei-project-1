@@ -23,12 +23,13 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, color, sound, image){
+    constructor(name, type, position, color, image, imageAuth){
       this.name = name
       this.type = type
+      this.position = position
       this.color = color
-      this.sound = sound
       this.image = image
+      this.imageAuth = imageAuth
     }
   }
 
@@ -54,14 +55,18 @@ function init() {
   const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
 
+  //objects
   const wall = new Infrastructure('wall', 'wall', true)
   const secretPassage = new Infrastructure('secretPassage', 'wall', false)
   const emptySpace = new Infrastructure('emptySpace', 'path' , false)
   const trapfloor = new Infrastructure('trapfloor', 'path' , false)
 
-  const whenuaH = new Character('whenuaH', 'hero', 'green')
-  const redVirus = new Character('redV', 'virus', 'red' )
+  const whenuaH = new Character('whenuaH', 'hero', 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
 
+  whenuaH.position = 122
+  redV.position = 66
+  
   //functions
   function createGrid(){
     for (let i = 0; i < gridCellCount; i++){
@@ -77,11 +82,18 @@ function init() {
       cells[i].classList.add(currentGridLayout.design[i])
   }
 
+  function addCharacter(character){
+    cells[character.position].classList.add(character.name)
+    cells[character.position].style.backgroundColor  = character.color
+  }
+
   //execution
 
   createGrid()
   addInfrastructure(currentGridLayout)
   console.log(cells)
+
+  addCharacter(whenuaH)
 
   //listeners
 
