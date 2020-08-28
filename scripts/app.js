@@ -28,7 +28,7 @@ function init() {
   const gridCellCount = width * width
   const cells = []
 
-  const arrInfra = [
+  const arrInfraOne = [
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall', 'emptySpace','wall','wall','wall','wall','secretPassage','wall','emptySpace','wall', 'wall',
@@ -59,7 +59,7 @@ function init() {
     }
   }
 
-  function addInfrastructure(){
+  function addInfrastructure(arrInfra){
     for (let i = 0; i < gridCellCount; i++)
       cells[i].classList.add(arrInfra[i])
   }
@@ -67,7 +67,7 @@ function init() {
   //execution
 
   createGrid()
-  addInfrastructure()
+  addInfrastructure(arrInfraOne)
   console.log(cells)
 
   //listeners
