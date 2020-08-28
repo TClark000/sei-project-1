@@ -99,6 +99,15 @@ function init() {
     }
   }
 
+  function getSolid(name){
+    for (let i = 0; i < arrInfra.length; i++){
+      if (name === arrInfra[i].name) {
+        // console.log(name, arrInfra[i].solid, i)
+        return arrInfra[i].solid
+      }
+    }
+  }
+
   function addInfrastructure(currentGridLayout){
     for (let i = 0; i < gridCellCount; i++){
       cells[i].classList.add(currentGridLayout.design[i])
@@ -129,15 +138,20 @@ function init() {
 
     switch (event.keyCode){
       case 39: // arrow right
-        if (x < currentGridLayout.width - 1) param1.position++
+        if (x < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + 1]))) param1.position++
         break
-        case 37: // arrow left
-        if (x > 0) param1.position--
+      case 37: // arrow left
+        if (x > 0 && !(getSolid(currentGridLayout.design[param1.position - 1]))) param1.position--
+        break
+      case 38: //arrow up
+        if (y > 0 && !(getSolid(currentGridLayout.design[param1.position - currentGridLayout.width]))) param1.position -= currentGridLayout.width
+        break
+      case 40: //arrow down
+        if (y < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + currentGridLayout.width]))) param1.position += currentGridLayout.width
         break
       default:
         console.log('Try an arrow key.')
     } 
-
     addCharacter(param1)
   }
 
