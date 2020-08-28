@@ -5,6 +5,15 @@ function init() {
   const grid = document.querySelector('.grid')
 
   //classes
+  class gridLayout {
+    constructor(name, level, width, design){
+      this.name = name
+      this.level = level
+      this.width = width
+      this.design = design
+    }
+  }
+
   class Infrastructure {
     constructor(name, type, solid = true){
       this.name = name
@@ -24,11 +33,7 @@ function init() {
 
   //variables
   //infrastructure variables
-  const width = 12
-  const gridCellCount = width * width
-  const cells = []
-
-  const arrInfraOne = [
+  const gridAlpha = new gridLayout('alpha', 1, 12, [
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall', 'emptySpace','wall','wall','wall','wall','secretPassage','wall','emptySpace','wall', 'wall',
@@ -41,17 +46,25 @@ function init() {
     'wall', 'wall', 'emptySpace','wall','secretPassage','wall','wall','wall','wall','emptySpace','wall', 'wall',
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
-  ]
+  ])
 
+  const currentGridLayout = gridAlpha
+  console.log(currentGridLayout.name,  currentGridLayout.width)
+
+  // const width = 12
+  // const gridCellCount = width * width
+  const cells = []
+ 
   const wall = new Infrastructure('wall', 'wall', true)
-  const path = new Infrastructure('emptySpace', 'path' , false)
   const secretPassage = new Infrastructure('secretPassage', 'wall', false)
+  const emptySpace = new Infrastructure('emptySpace', 'path' , false)
+  const trapfloor = new Infrastructure('trapfloor', 'path' , false)
 
   const redVirus = new Virus('fast', 'redVirus', 'red' )
 
   //functions
-  function createGrid(){
-    for (let i = 0; i < gridCellCount; i++){
+  function createGrid(currentGridLayout){
+    for (let i = 0; i < (currentGridLayout.width * currentGridLayout.width); i++){
       const cell = document.createElement('div')
       cell.setAttribute('data-i', i)
       cells.push(cell)
@@ -59,15 +72,15 @@ function init() {
     }
   }
 
-  function addInfrastructure(arrInfra){
-    for (let i = 0; i < gridCellCount; i++)
-      cells[i].classList.add(arrInfra[i])
+  function addInfrastructure(currentGridLayout){
+    for (let i = 0; i < (currentGridLayout.width * currentGridLayout.width); i++)
+      cells[i].classList.add(currentGridLayout.design[i])
   }
 
   //execution
 
-  createGrid()
-  addInfrastructure(arrInfraOne)
+  createGrid(currentGridLayout)
+  addInfrastructure(currentGridLayout)
   console.log(cells)
 
   //listeners
