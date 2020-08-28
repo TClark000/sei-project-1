@@ -20,6 +20,10 @@ function init() {
       this.type = type
       this.solid = solid
       this.color = color
+      Infrastructure.addArrInfra(this)
+    }
+    static addArrInfra(item) {
+      arrInfra.push(item)
     }
   }
 
@@ -31,6 +35,10 @@ function init() {
       this.color = color
       this.image = image
       this.imageAuth = imageAuth
+      Character.addArrCharacter(this)
+    }
+    static addArrCharacter(item){
+      arrCharacter.push(item)
     }
   }
 
@@ -56,6 +64,7 @@ function init() {
   const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
   const arrInfra = []
+  const arrCharacter = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
@@ -68,8 +77,9 @@ function init() {
 
   whenuaH.position = 122
   redV.position = 66
-  arrInfra.push(wall, secretPassage, emptySpace, trapFloor)
-  // console.log(arrInfra)
+
+  console.log(arrInfra)
+  console.log(arrCharacter)
 
   //functions
   function createGrid(){
