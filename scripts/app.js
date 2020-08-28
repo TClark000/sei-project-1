@@ -111,6 +111,36 @@ function init() {
     cells[character.position].style.backgroundColor  = character.color
   }
 
+  function removeCharacter(character){
+    let classList = cells[character.position].classList.value
+    if (classList.includes(' ')) {
+      classList = classList.slice(0, classList.search(' '))
+    }
+    cells[character.position].classList.remove(character.name)
+    cells[character.position].style.backgroundColor  = getColor(classList)
+  }
+
+  const handleKeyup = function(param1, param2){
+    // console.log(event.keyCode, param1, param2)
+    removeCharacter(param1)
+
+    const x = param1.position % currentGridLayout.width
+    const y = Math.floor(param1.position / currentGridLayout.width)
+
+    switch (event.keyCode){
+      case 39: // arrow right
+        if (x < currentGridLayout.width - 1) param1.position++
+        break
+        case 37: // arrow left
+        if (x > 0) param1.position--
+        break
+      default:
+        console.log('Try an arrow key.')
+    } 
+
+    addCharacter(param1)
+  }
+
   //execution
 
   createGrid()
@@ -121,6 +151,7 @@ function init() {
   addCharacter(redV)
 
   //listeners
+  document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
 
 }
 window.addEventListener('DOMContentLoaded', init)
