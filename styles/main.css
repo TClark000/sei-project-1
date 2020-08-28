@@ -24,20 +24,3 @@ body {
   height: 8%;
   width: 8%;
 }
-
-.wall {
-  background-color: blue;
-}
-
-.emptySpace {
-  background-color: whitesmoke;
-}
-
-.secretPassage {
-  background-color: palevioletred;
-}
-
-.character {
-  border: none;
-  background: url("") no-repeat center;
-}

@@ -15,10 +15,11 @@ function init() {
   }
 
   class Infrastructure {
-    constructor(name, type, solid = true){
+    constructor(name, type, solid = true, color){
       this.name = name
       this.type = type
       this.solid = solid
+      this.color = color
     }
   }
 
@@ -34,7 +35,7 @@ function init() {
   }
 
   //variables
-  //infrastructure variables
+
   const gridAlpha = new gridLayout('alpha', 1, 12, [
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
@@ -51,22 +52,25 @@ function init() {
   ])
 
   const currentGridLayout = gridAlpha
-  console.log(currentGridLayout.name,  currentGridLayout.width)
+  // console.log('gridLayoutName: ', currentGridLayout.name, 'width: ', currentGridLayout.width)
   const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
+  const arrInfra = []
 
   //objects
-  const wall = new Infrastructure('wall', 'wall', true)
-  const secretPassage = new Infrastructure('secretPassage', 'wall', false)
-  const emptySpace = new Infrastructure('emptySpace', 'path' , false)
-  const trapfloor = new Infrastructure('trapfloor', 'path' , false)
-
+  const wall = new Infrastructure('wall', 'wall', true, 'blue')
+  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'palevioletred')
+  const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
+  const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
+  
   const whenuaH = new Character('whenuaH', 'hero', 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
 
   whenuaH.position = 122
   redV.position = 66
-  
+  arrInfra.push(wall, secretPassage, emptySpace, trapFloor)
+  // console.log(arrInfra)
+
   //functions
   function createGrid(){
     for (let i = 0; i < gridCellCount; i++){
@@ -77,9 +81,19 @@ function init() {
     }
   }
 
+  function getColor(name){
+    for (let i = 0; i < arrInfra.length; i++){
+      if (name === arrInfra[i].name) {
+        return arrInfra[i].color
+      }
+    }
+  }
+
   function addInfrastructure(currentGridLayout){
-    for (let i = 0; i < gridCellCount; i++)
+    for (let i = 0; i < gridCellCount; i++){
       cells[i].classList.add(currentGridLayout.design[i])
+      cells[i].style.backgroundColor  = getColor(currentGridLayout.design[i])
+    }
   }
 
   function addCharacter(character){
@@ -94,6 +108,7 @@ function init() {
   console.log(cells)
 
   addCharacter(whenuaH)
+  addCharacter(redV)
 
   //listeners
 
