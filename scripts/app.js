@@ -22,12 +22,13 @@ function init() {
     }
   }
 
-  class Virus {
-    constructor(name, type, color, sound){
+  class Character {
+    constructor(name, type, color, sound, image){
       this.name = name
       this.type = type
       this.color = color
       this.sound = sound
+      this.image = image
     }
   }
 
@@ -50,21 +51,20 @@ function init() {
 
   const currentGridLayout = gridAlpha
   console.log(currentGridLayout.name,  currentGridLayout.width)
-
-  // const width = 12
-  // const gridCellCount = width * width
+  const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
- 
+
   const wall = new Infrastructure('wall', 'wall', true)
   const secretPassage = new Infrastructure('secretPassage', 'wall', false)
   const emptySpace = new Infrastructure('emptySpace', 'path' , false)
   const trapfloor = new Infrastructure('trapfloor', 'path' , false)
 
-  const redVirus = new Virus('fast', 'redVirus', 'red' )
+  const whenuaH = new Character('whenuaH', 'hero', 'green')
+  const redVirus = new Character('redV', 'virus', 'red' )
 
   //functions
-  function createGrid(currentGridLayout){
-    for (let i = 0; i < (currentGridLayout.width * currentGridLayout.width); i++){
+  function createGrid(){
+    for (let i = 0; i < gridCellCount; i++){
       const cell = document.createElement('div')
       cell.setAttribute('data-i', i)
       cells.push(cell)
@@ -73,13 +73,13 @@ function init() {
   }
 
   function addInfrastructure(currentGridLayout){
-    for (let i = 0; i < (currentGridLayout.width * currentGridLayout.width); i++)
+    for (let i = 0; i < gridCellCount; i++)
       cells[i].classList.add(currentGridLayout.design[i])
   }
 
   //execution
 
-  createGrid(currentGridLayout)
+  createGrid()
   addInfrastructure(currentGridLayout)
   console.log(cells)
 
