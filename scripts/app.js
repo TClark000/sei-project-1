@@ -3,8 +3,10 @@ function init() {
   
   //elements
   const grid = document.querySelector('.grid')
-  const startButton = document.querySelector('#startButton')
+  const spanTitle = document.querySelector('#title')
+  const spanSubTitle = document.querySelector('#subtitle')
   const spanGameCycle = document.querySelector('#gameCycle')
+  const startButton = document.querySelector('#startButton')
 
   //classes
   class gridLayout {
@@ -68,7 +70,7 @@ function init() {
   const cells = []
   const arrInfra = []
   const arrCharacter = []
-  let arrTimerID = []
+  const arrTimerID = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
@@ -80,10 +82,14 @@ function init() {
   const redV = new Character('redV', 'virus', 0, 0,  'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
   const blueV = new Character('blueV', 'virus', 0, 0, 'paleblue', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
 
-
-  whenuaH.position = 122
-  redV.position = 66
+  const whenuaHStartPosition = 122
+  const virusStartPosition = 66
   let gamePlay = false
+  const gameCycleStart = 3
+  const starterSpanSubtitle = spanSubTitle.textContent
+
+  whenuaH.position = whenuaHStartPosition
+  redV.position = virusStartPosition
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -137,26 +143,32 @@ function init() {
   }
 
   function gameTimer(){
+    spanSubTitle.textContent = starterSpanSubtitle
+    spanGameCycle.textContent = gameCycleStart
+
     let countCycle = Number(spanGameCycle.textContent)
     const timerName = 'gameCycle'
 
     const IndexGameCycle = addTimerObj(timerName)
+
     gamePlay = true
-    
+    addCharacter(whenuaH)
     addVirusCharacters(redV)
 
     window.addEventListener('scroll', docuScroll)
 
     arrTimerID[IndexGameCycle]['timerID'] = setInterval(()=>{
+      countCycle --
       // console.log(arrTimerID[IndexGameCycle]['timerID'])
-      if ((countCycle === 1) || (!gamePlay)) {
+
+      if ((countCycle === 0) || (!gamePlay)) {
         gamePlay = false
-        window.alert('Game Over')
         clearInterval(arrTimerID[IndexGameCycle]['timerID'])
         arrTimerID.splice(arrTimerID[IndexGameCycle], 1)
         endGame()
+        return
       }
-      countCycle --
+
       spanGameCycle.textContent = countCycle
     }, 5000)
   
@@ -250,18 +262,20 @@ function init() {
   }
 
   function endGame(){
-
     console.log('Game Ended Function')
-    // arrTimerID = []
-    console.log('256 arrTimerID', arrTimerID)
 
+    spanSubTitle.textContent = 'Game Over'
+    spanGameCycle.textContent = 'zero'
     arrTimerID.forEach(element => {
-      console.log(element)
       clearInterval(arrTimerID[0]['timerID'])
       arrTimerID.splice(element, 1)
     })
-    
+
     removeCharacter(redV)
+    removeCharacter(whenuaH)
+
+    whenuaH.position = whenuaHStartPosition
+    redV.position = virusStartPosition
 
     window.addEventListener('scroll', docuScroll)
   }
