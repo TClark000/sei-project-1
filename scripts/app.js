@@ -67,6 +67,7 @@ function init() {
   const cells = []
   const arrInfra = []
   const arrCharacter = []
+  let arrTimerID = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
@@ -76,6 +77,8 @@ function init() {
   
   const whenuaH = new Character('whenuaH', 'hero', 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 'paleblue', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+
 
   whenuaH.position = 122
   redV.position = 66
@@ -134,18 +137,21 @@ function init() {
 
   function gameTimer(){
     let countCycle = Number(spanGameCycle.textContent)
-    let timerIDCycle = null
+    const timerName = 'gameCycle'
+
+    addTimerObj(timerName)
+    const arrIndex = getArrTimerID(timerName)
+
+    gamePlay = true
+    addVirusCharacters(redV)
 
     window.addEventListener('scroll', docuScroll)
-    gamePlay = true
-    addVirusCharacters()
-    
 
-    timerIDCycle = setInterval(()=>{
+    arrTimerID[arrIndex].timerElement.timerID = setInterval(()=>{
       
       if (countCycle === 1){
         gamePlay = false
-        clearInterval(timerIDCycle)
+        clearInterval(arrTimerID[arrIndex].timerElement.timerID)
         window.alert('Game Over')
         endGame()
       }
@@ -159,15 +165,42 @@ function init() {
     window.scrollTo(0,0)
   }
 
+  function addVirusCharacters(virus){
+    let counterV = 10
+    const virusName = virus['name']
+    addTimerObj(virusName)
+    const arrIndex = getArrTimerID(virusName)
 
-  function addVirusCharacters(){
-    addCharacter(redV)
+    console.log(arrTimerID)
+
+    addCharacter(virus)
+
+    arrTimerID[arrIndex].timerElement.timerID = setInterval(()=>{
+      if (counterV === 0){
+        clearInterval(arrTimerID[arrIndex].timerElement.timerID)
+      }
+      counterV --
+    },1000)
 
   }
 
+  function addTimerObj(name){
+    const timerElement = {}
+    timerElement.name = name
+    timerElement.timerID = null
+    arrTimerID.push({ timerElement: timerElement })
+  }
+
+  function getArrTimerID(name){
+    for (let i = 0; i < arrTimerID.length; i++){
+      if (name === arrTimerID[i].timerElement.name) {
+        return i
+      }
+    }
+  }
 
   const handleKeyup = function(param1, param2){
-    console.log(event.keyCode, param1, param2)
+    // console.log(event.keyCode, param1, param2)
 
     if (gamePlay){
       removeCharacter(param1)
@@ -196,12 +229,14 @@ function init() {
   }
 
   function endGame(){
-    window.addEventListener('scroll', docuScroll)
-  
+
+    arrTimerID = []
+
     removeCharacter(redV)
-    docuScroll = 'visible'
-    console.log(docuScroll)
+
+    window.addEventListener('scroll', docuScroll)
   }
+
   //execution
 
   createGrid()
