@@ -30,10 +30,11 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, position, color, image, imageAuth){
+    constructor(name, type, position, previousPosition, color, image, imageAuth){
       this.name = name
       this.type = type
       this.position = position
+      this.previousPosition = previousPosition
       this.color = color
       this.image = image
       this.imageAuth = imageAuth
@@ -75,9 +76,9 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 'paleblue', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0,  'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 'paleblue', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
 
 
   whenuaH.position = 122
@@ -139,18 +140,20 @@ function init() {
     let countCycle = Number(spanGameCycle.textContent)
     const timerName = 'gameCycle'
 
-    const arrIndex = addTimerObj(timerName)
+    const IndexGameCycle = addTimerObj(timerName)
     gamePlay = true
+    
     addVirusCharacters(redV)
 
     window.addEventListener('scroll', docuScroll)
 
-    arrTimerID[arrIndex].timerID = setInterval(()=>{
-      
-      if (countCycle === 1){
+    arrTimerID[IndexGameCycle]['timerID'] = setInterval(()=>{
+      // console.log(arrTimerID[IndexGameCycle]['timerID'])
+      if ((countCycle === 1) || (!gamePlay)) {
         gamePlay = false
-        clearInterval(arrTimerID[arrIndex].timerID)
         window.alert('Game Over')
+        clearInterval(arrTimerID[IndexGameCycle]['timerID'])
+        arrTimerID.splice(arrTimerID[IndexGameCycle], 1)
         endGame()
       }
       countCycle --
@@ -164,23 +167,22 @@ function init() {
   }
 
   function addVirusCharacters(virus){
-    let counterV = 10
     const virusName = virus['name']
-    const arrIndex = addTimerObj(virusName)
+    const IndexCharacter = addTimerObj(virusName)
 
     addCharacter(virus)
-    console.log(virus)
-    arrTimerID[arrIndex].timerID = setInterval(()=>{
+    // console.log(virus)
+    arrTimerID[IndexCharacter]['timerID'] = setInterval(()=>{
 
       moveObj(virus)
 
-      if (counterV === 0){
-        clearInterval(arrTimerID[arrIndex].timerID)
+      if (!gamePlay){
+        clearInterval(arrTimerID[IndexCharacter]['timerID'])
+        arrTimerID.splice(arrTimerID[IndexCharacter], 1)
+        console.log('arrTimerID', arrTimerID)
       }
 
-      counterV --
-
-    },1000)
+    },500)
 
   }
 
@@ -194,17 +196,27 @@ function init() {
   }
 
   function moveObj(name){
+    let arrRandomPosition = []
+    const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
+
     removeCharacter(name)
-    const arrOption = [ [name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
+
     for (let i = 0; i < arrOption.length; i++) {
-      if (!getSolid(currentGridLayout.design[arrOption[i][0]])){
+      if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
         arrOption[i][1] = true
       }
     }
     const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
-    const randomPosition = arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)]
-    console.log(randomPosition)
-    name.position = randomPosition[0]
+    // console.log(arrPossiblePosition)
+    if (arrPossiblePosition.length > 0) {
+      arrRandomPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
+      name.previousPosition = name.position
+    } else { 
+      arrRandomPosition = [name.previousPosition, true]
+    }
+    // console.log(arrRandomPosition)
+    name.position = arrRandomPosition[0]
+
     addCharacter(name)
   }
 
@@ -239,8 +251,16 @@ function init() {
 
   function endGame(){
 
-    arrTimerID = []
+    console.log('Game Ended Function')
+    // arrTimerID = []
+    console.log('256 arrTimerID', arrTimerID)
 
+    arrTimerID.forEach(element => {
+      console.log(element)
+      clearInterval(arrTimerID[0]['timerID'])
+      arrTimerID.splice(element, 1)
+    })
+    
     removeCharacter(redV)
 
     window.addEventListener('scroll', docuScroll)
