@@ -169,12 +169,17 @@ function init() {
     const arrIndex = addTimerObj(virusName)
 
     addCharacter(virus)
-
+    console.log(virus)
     arrTimerID[arrIndex].timerID = setInterval(()=>{
+
+      moveObj(virus)
+
       if (counterV === 0){
         clearInterval(arrTimerID[arrIndex].timerID)
       }
+
       counterV --
+
     },1000)
 
   }
@@ -186,6 +191,21 @@ function init() {
     // arrTimerID.push({ timerElement: timerElement }) has title of timerElement
     arrTimerID.push(timerElement)
     return (arrTimerID.indexOf(timerElement))
+  }
+
+  function moveObj(name){
+    removeCharacter(name)
+    const arrOption = [ [name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
+    for (let i = 0; i < arrOption.length; i++) {
+      if (!getSolid(currentGridLayout.design[arrOption[i][0]])){
+        arrOption[i][1] = true
+      }
+    }
+    const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
+    const randomPosition = arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)]
+    console.log(randomPosition)
+    name.position = randomPosition[0]
+    addCharacter(name)
   }
 
   const handleKeyup = function(param1, param2){
