@@ -139,19 +139,17 @@ function init() {
     let countCycle = Number(spanGameCycle.textContent)
     const timerName = 'gameCycle'
 
-    addTimerObj(timerName)
-    const arrIndex = getArrTimerID(timerName)
-
+    const arrIndex = addTimerObj(timerName)
     gamePlay = true
     addVirusCharacters(redV)
 
     window.addEventListener('scroll', docuScroll)
 
-    arrTimerID[arrIndex].timerElement.timerID = setInterval(()=>{
+    arrTimerID[arrIndex].timerID = setInterval(()=>{
       
       if (countCycle === 1){
         gamePlay = false
-        clearInterval(arrTimerID[arrIndex].timerElement.timerID)
+        clearInterval(arrTimerID[arrIndex].timerID)
         window.alert('Game Over')
         endGame()
       }
@@ -168,16 +166,13 @@ function init() {
   function addVirusCharacters(virus){
     let counterV = 10
     const virusName = virus['name']
-    addTimerObj(virusName)
-    const arrIndex = getArrTimerID(virusName)
-
-    console.log(arrTimerID)
+    const arrIndex = addTimerObj(virusName)
 
     addCharacter(virus)
 
-    arrTimerID[arrIndex].timerElement.timerID = setInterval(()=>{
+    arrTimerID[arrIndex].timerID = setInterval(()=>{
       if (counterV === 0){
-        clearInterval(arrTimerID[arrIndex].timerElement.timerID)
+        clearInterval(arrTimerID[arrIndex].timerID)
       }
       counterV --
     },1000)
@@ -188,15 +183,9 @@ function init() {
     const timerElement = {}
     timerElement.name = name
     timerElement.timerID = null
-    arrTimerID.push({ timerElement: timerElement })
-  }
-
-  function getArrTimerID(name){
-    for (let i = 0; i < arrTimerID.length; i++){
-      if (name === arrTimerID[i].timerElement.name) {
-        return i
-      }
-    }
+    // arrTimerID.push({ timerElement: timerElement }) has title of timerElement
+    arrTimerID.push(timerElement)
+    return (arrTimerID.indexOf(timerElement))
   }
 
   const handleKeyup = function(param1, param2){
