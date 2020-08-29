@@ -3,6 +3,8 @@ function init() {
   
   //elements
   const grid = document.querySelector('.grid')
+  const startButton = document.querySelector('#startButton')
+  const spanGameCycle = document.querySelector('#gameCycle')
 
   //classes
   class gridLayout {
@@ -77,6 +79,7 @@ function init() {
 
   whenuaH.position = 122
   redV.position = 66
+  let gamePlay = false
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -129,30 +132,52 @@ function init() {
     cells[character.position].style.backgroundColor  = getColor(classList)
   }
 
+  function gameTimer(){
+    let countCycle = Number(spanGameCycle.textContent)
+    let timerIDCycle = null
+    gamePlay = true
+    addVirus()
+
+    timerIDCycle = setInterval(()=>{
+      
+      if (countCycle === 1){
+        gamePlay = false
+        clearInterval(timerIDCycle)
+        window.alert('Game Over')
+      }
+      countCycle --
+      spanGameCycle.textContent = countCycle
+    }, 5000)
+  
+  }
+
   const handleKeyup = function(param1, param2){
-    // console.log(event.keyCode, param1, param2)
-    removeCharacter(param1)
+    console.log(event.keyCode, param1, param2)
 
-    const x = param1.position % currentGridLayout.width
-    const y = Math.floor(param1.position / currentGridLayout.width)
+    if (gamePlay){
+      removeCharacter(param1)
 
-    switch (event.keyCode){
-      case 39: // arrow right
-        if (x < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + 1]))) param1.position++
-        break
-      case 37: // arrow left
-        if (x > 0 && !(getSolid(currentGridLayout.design[param1.position - 1]))) param1.position--
-        break
-      case 38: //arrow up
-        if (y > 0 && !(getSolid(currentGridLayout.design[param1.position - currentGridLayout.width]))) param1.position -= currentGridLayout.width
-        break
-      case 40: //arrow down
-        if (y < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + currentGridLayout.width]))) param1.position += currentGridLayout.width
-        break
-      default:
-        console.log('Try an arrow key.')
-    } 
-    addCharacter(param1)
+      const x = param1.position % currentGridLayout.width
+      const y = Math.floor(param1.position / currentGridLayout.width)
+
+      switch (event.keyCode){
+        case 39: // arrow right
+          if (x < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + 1]))) param1.position++
+          break
+        case 37: // arrow left
+          if (x > 0 && !(getSolid(currentGridLayout.design[param1.position - 1]))) param1.position--
+          break
+        case 38: //arrow up
+          if (y > 0 && !(getSolid(currentGridLayout.design[param1.position - currentGridLayout.width]))) param1.position -= currentGridLayout.width
+          break
+        case 40: //arrow down
+          if (y < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + currentGridLayout.width]))) param1.position += currentGridLayout.width
+          break
+        default:
+          console.log('Try an arrow key.')
+      } 
+      addCharacter(param1)
+    }
   }
 
   //execution
@@ -165,6 +190,7 @@ function init() {
   addCharacter(redV)
 
   //listeners
+  startButton.addEventListener('click', gameTimer)
   document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
 
 }
