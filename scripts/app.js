@@ -135,8 +135,11 @@ function init() {
   function gameTimer(){
     let countCycle = Number(spanGameCycle.textContent)
     let timerIDCycle = null
+
+    window.addEventListener('scroll', docuScroll)
     gamePlay = true
-    addVirus()
+    addVirusCharacters()
+    
 
     timerIDCycle = setInterval(()=>{
       
@@ -144,12 +147,24 @@ function init() {
         gamePlay = false
         clearInterval(timerIDCycle)
         window.alert('Game Over')
+        endGame()
       }
       countCycle --
       spanGameCycle.textContent = countCycle
     }, 5000)
   
   }
+
+  function docuScroll(){
+    window.scrollTo(0,0)
+  }
+
+
+  function addVirusCharacters(){
+    addCharacter(redV)
+
+  }
+
 
   const handleKeyup = function(param1, param2){
     console.log(event.keyCode, param1, param2)
@@ -180,6 +195,13 @@ function init() {
     }
   }
 
+  function endGame(){
+    window.addEventListener('scroll', docuScroll)
+  
+    removeCharacter(redV)
+    docuScroll = 'visible'
+    console.log(docuScroll)
+  }
   //execution
 
   createGrid()
@@ -187,7 +209,7 @@ function init() {
   console.log(cells)
 
   addCharacter(whenuaH)
-  addCharacter(redV)
+  
 
   //listeners
   startButton.addEventListener('click', gameTimer)
