@@ -96,7 +96,8 @@ function init() {
   const whenuaHStartPosition = 122
   const virusStartPosition = 66
   let gamePlay = false
-  const starterSpanSubtitle = spanSubTitle.textContent
+  const starterSubtitle = spanSubTitle.textContent
+  const starterGameCycle = 3
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition
@@ -159,9 +160,11 @@ function init() {
   }
 
   function gameTimer(){
-    spanSubTitle.textContent = starterSpanSubtitle
-    spanGameTime.textContent = gameTime = starterGameTime
-
+    spanSubTitle.textContent = starterSubtitle
+    spanGameTime.textContent = starterGameTime
+    spanGameCycle.textContent = starterGameCycle
+    gameTime = starterGameTime
+    
     const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
 
