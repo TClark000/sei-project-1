@@ -91,7 +91,8 @@ function init() {
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
-  let gameTime = Number(spanGameTime.textContent) //overall time allowed for the game
+  const starterGameTime = 20 //overall time allowed for the game
+  let gameTime = starterGameTime
   const whenuaHStartPosition = 122
   const virusStartPosition = 66
   let gamePlay = false
@@ -159,31 +160,28 @@ function init() {
 
   function gameTimer(){
     spanSubTitle.textContent = starterSpanSubtitle
+    spanGameTime.textContent = gameTime = starterGameTime
 
     const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
 
     gamePlay = true
-    addCharacter(whenuaH)
-    addVirusCharacters(redV)
-    // addVirusCharacters(greenV)
-    // addVirusCharacters(blueV)
+    
+    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
+      arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
+    }
 
     window.addEventListener('scroll', docuScroll)
 
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameTime --
       spanGameTime.textContent = gameTime
-      console.log(gameTime)
-      if ((gameTime === 0) || (!gamePlay)) {
+      if ((gameTime <= 0) || (!gamePlay)) {
         gamePlay = false
         console.log('Game time reached.')
         endGame()
       }
-
-      // spanGameCycle.textContent = countCycle
     }, 1000)
-  
   }
 
   function docuScroll(){
@@ -191,14 +189,12 @@ function init() {
   }
 
   function addVirusCharacters(virus){
-    const virusVaporize = false
     const virusName = virus['name']
     addCharacter(virus)
-    let counter = 1
     const indexOfTimer = addTimerObj(virusName)
+
     arrTimerID[indexOfTimer]['timerID'] = setInterval(()=>{
-      counter ++
-      if (!gamePlay){
+      if ((!gamePlay) || (!virus.life)) {
         // indexOfTimer = arrTimerID.map(function(e) { 
         //   return e.name 
         // }).indexOf(virusName)
@@ -211,16 +207,9 @@ function init() {
         // }
         return
       }
-      // if (counter > 5) {
-      //   removeCharacter(virus)
-      //   redV.position = virusStartPosition
-      //   setTimeout((console.log('working')), 10000)
-      //   counter = 0
-      // }
       moveObj(virus)
 
-    }, 500)
-
+    }, virus.speed)
   }
 
   function addTimerObj(name){
@@ -235,9 +224,7 @@ function init() {
   function moveObj(name){
     let arrRandomPosition = []
     const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
-
     removeCharacter(name)
-
     for (let i = 0; i < arrOption.length; i++) {
       if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
         arrOption[i][1] = true
@@ -254,8 +241,10 @@ function init() {
     }
     // console.log(arrRandomPosition)
     name.position = arrRandomPosition[0]
-
-    addCharacter(name)
+    checkForAnotherChar(name)
+    if (name.life) {
+      addCharacter(name)
+    }
   }
 
   const handleKeyup = function(param1, param2){
@@ -307,29 +296,30 @@ function init() {
               spanGameCycle.textContent = 'zero'
               endGame()
             }
+          } else if ((character.type === 'virus') && (arrCharacter[i].type === 'hero') && (character.vulnerable)){
+            console.log(character.name, ': expires.')
+            character.life = false
+          } else if ((character.type === 'virus') && (arrCharacter[i].type === 'hero') && (arrCharacter[i].vulnerable)){
+            removeLife()
           }
         }
       }
     }
   }
 
-
   function endGame(){
     console.log('Game Ended Function')
-    spanSubTitle.textContent = 'Game Over'
-
-    removeCharacter(redV)
-    removeCharacter(greenV)
-    removeCharacter(blueV)
-    removeCharacter(whenuaH)
+    spanSubTitle.textContent = 'Game Over'  
+    
+    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
+      removeCharacter(arrCharacter[i])
+      arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition) : arrCharacter[i].position = whenuaHStartPosition
+    }
 
     for (let i = arrTimerID.length - 1; i >= 0; i-- ){
       clearInterval(arrTimerID[i]['timerID'])
       arrTimerID.splice(i, 1)
     }
-
-    whenuaH.position = whenuaHStartPosition
-    redV.position = virusStartPosition
 
     window.addEventListener('scroll', docuScroll)
   }
