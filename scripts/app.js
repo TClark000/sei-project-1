@@ -5,6 +5,7 @@ function init() {
   const grid = document.querySelector('.grid')
   const spanTitle = document.querySelector('#title')
   const spanSubTitle = document.querySelector('#subtitle')
+  let spanGameTime = document.querySelector('#gameTime')
   const spanGameCycle = document.querySelector('#gameCycle')
   const startButton = document.querySelector('#startButton')
 
@@ -32,12 +33,15 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, position, previousPosition, speed = 1, color, image, imageSize, imageAuth){
+    constructor(name, type, position, previousPosition, speed, life, strength, vulnerable,color, image, imageSize, imageAuth){
       this.name = name
       this.type = type
       this.position = position
       this.previousPosition = previousPosition
-      this.speed = this.speed
+      this.speed = speed
+      this.life = life
+      this.strength = strength
+      this.vulnerable = vulnerable
       this.color = color
       this.image = image
       this.imageSize = imageSize
@@ -72,7 +76,7 @@ function init() {
   const cells = []
   const arrInfra = []
   const arrCharacter = []
-  let arrTimerID = []
+  const arrTimerID = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
@@ -80,19 +84,17 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0, 500, 'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 1000,'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 2000,'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
-
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 2000, true, 100, false, 'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
-
+  let gameTime = Number(spanGameTime.textContent) //overall time allowed for the game
   const whenuaHStartPosition = 122
   const virusStartPosition = 66
   let gamePlay = false
-  const gameCycleStart = 3
   const starterSpanSubtitle = spanSubTitle.textContent
 
   whenuaH.position = whenuaHStartPosition
@@ -139,7 +141,7 @@ function init() {
 
   function addCharacter(character){
     cells[character.position].classList.add(character.name)
-    console.log('Adding Character: ', character.name)
+    console.log('add/move Character: ', character.name)
     cells[character.position].style.backgroundColor  = character.color
     cells[character.position].style.background  = character.image
     cells[character.position].style.backgroundSize =  character.imageSize
@@ -157,32 +159,30 @@ function init() {
 
   function gameTimer(){
     spanSubTitle.textContent = starterSpanSubtitle
-    spanGameCycle.textContent = gameCycleStart
 
-    let countCycle = Number(spanGameCycle.textContent)
-    const timerName = 'gameCycle'
-
+    const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
 
     gamePlay = true
     addCharacter(whenuaH)
     addVirusCharacters(redV)
-    addVirusCharacters(greenV)
-    addVirusCharacters(blueV)
+    // addVirusCharacters(greenV)
+    // addVirusCharacters(blueV)
 
     window.addEventListener('scroll', docuScroll)
 
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
-      countCycle --
-
-      if ((countCycle === 0) || (!gamePlay)) {
+      gameTime --
+      spanGameTime.textContent = gameTime
+      console.log(gameTime)
+      if ((gameTime === 0) || (!gamePlay)) {
         gamePlay = false
+        console.log('Game time reached.')
         endGame()
-        return
       }
 
-      spanGameCycle.textContent = countCycle
-    }, 5000)
+      // spanGameCycle.textContent = countCycle
+    }, 1000)
   
   }
 
@@ -191,14 +191,13 @@ function init() {
   }
 
   function addVirusCharacters(virus){
-    
+    const virusVaporize = false
     const virusName = virus['name']
     addCharacter(virus)
-
+    let counter = 1
     const indexOfTimer = addTimerObj(virusName)
     arrTimerID[indexOfTimer]['timerID'] = setInterval(()=>{
-      const virusEvaporates = false
-
+      counter ++
       if (!gamePlay){
         // indexOfTimer = arrTimerID.map(function(e) { 
         //   return e.name 
@@ -212,11 +211,12 @@ function init() {
         // }
         return
       }
-      if (virusEvaporates){
-        removeCharacter(virus)
-        redV.position = virusStartPosition
-        setTimeout((console.log('working')), 5000)
-      }
+      // if (counter > 5) {
+      //   removeCharacter(virus)
+      //   redV.position = virusStartPosition
+      //   setTimeout((console.log('working')), 10000)
+      //   counter = 0
+      // }
       moveObj(virus)
 
     }, 500)
@@ -250,6 +250,7 @@ function init() {
       name.previousPosition = name.position
     } else { 
       arrRandomPosition = [name.previousPosition, true]
+      name.previousPosition = name.Position
     }
     // console.log(arrRandomPosition)
     name.position = arrRandomPosition[0]
@@ -259,7 +260,6 @@ function init() {
 
   const handleKeyup = function(param1, param2){
     // console.log(event.keyCode, param1, param2)
-
     if (gamePlay){
       removeCharacter(param1)
 
@@ -281,15 +281,42 @@ function init() {
           break
         default:
           console.log('Try an arrow key.')
-      } 
-      addCharacter(param1)
+      }
+      checkForAnotherChar(param1)
+      if (gamePlay){ 
+        addCharacter(param1)
+      }
+    }
+
+  }
+
+  function checkForAnotherChar(character){
+    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
+      if (character.name !== arrCharacter[i].name){
+        if ((character.position === arrCharacter[i].position) && (character.vulnerable) && (arrCharacter[i].type !== 'hero') ) {
+          console.log(character.position, arrCharacter[i].position, character.vulnerable, arrCharacter[i].type !== 'hero')
+          character.life = false
+          if (character.type === 'hero'){
+            const cycle = Number(spanGameCycle.textContent)
+            if (cycle >= 2){
+              spanGameCycle.textContent = cycle - 1
+              character.life = true
+              console.log('loose life.')
+            } else {
+              gamePlay = false
+              spanGameCycle.textContent = 'zero'
+              endGame()
+            }
+          }
+        }
+      }
     }
   }
+
 
   function endGame(){
     console.log('Game Ended Function')
     spanSubTitle.textContent = 'Game Over'
-    spanGameCycle.textContent = 'zero'
 
     removeCharacter(redV)
     removeCharacter(greenV)
