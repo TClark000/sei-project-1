@@ -32,13 +32,15 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, position, previousPosition, color, image, imageAuth){
+    constructor(name, type, position, previousPosition, speed = 1, color, image, imageSize, imageAuth){
       this.name = name
       this.type = type
       this.position = position
       this.previousPosition = previousPosition
+      this.speed = this.speed
       this.color = color
       this.image = image
+      this.imageSize = imageSize
       this.imageAuth = imageAuth
       Character.addArrCharacter(this)
     }
@@ -70,7 +72,7 @@ function init() {
   const cells = []
   const arrInfra = []
   const arrCharacter = []
-  const arrTimerID = []
+  let arrTimerID = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
@@ -78,9 +80,14 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 'green', '.images/—Pngtree—earth png elements_2854043.png',"<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0,  'red', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 'paleblue', '.images/—Pngtree—red covid-19 bacteria isolated on_5340587.png',"<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0, 500, 'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 1000,'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 2000,'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
+
+
+  // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
+
 
   const whenuaHStartPosition = 122
   const virusStartPosition = 66
@@ -90,6 +97,8 @@ function init() {
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition
+  greenV.position = virusStartPosition + 12
+  blueV.position = virusStartPosition - 1
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -130,7 +139,10 @@ function init() {
 
   function addCharacter(character){
     cells[character.position].classList.add(character.name)
+    console.log('Adding Character: ', character.name)
     cells[character.position].style.backgroundColor  = character.color
+    cells[character.position].style.background  = character.image
+    cells[character.position].style.backgroundSize =  character.imageSize
   }
 
   function removeCharacter(character){
@@ -139,6 +151,7 @@ function init() {
       classList = classList.slice(0, classList.search(' '))
     }
     cells[character.position].classList.remove(character.name)
+    cells[character.position].style.background = ''
     cells[character.position].style.backgroundColor  = getColor(classList)
   }
 
@@ -149,22 +162,21 @@ function init() {
     let countCycle = Number(spanGameCycle.textContent)
     const timerName = 'gameCycle'
 
-    const IndexGameCycle = addTimerObj(timerName)
+    const indexGameCycle = addTimerObj(timerName)
 
     gamePlay = true
     addCharacter(whenuaH)
     addVirusCharacters(redV)
+    addVirusCharacters(greenV)
+    addVirusCharacters(blueV)
 
     window.addEventListener('scroll', docuScroll)
 
-    arrTimerID[IndexGameCycle]['timerID'] = setInterval(()=>{
+    arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       countCycle --
-      // console.log(arrTimerID[IndexGameCycle]['timerID'])
 
       if ((countCycle === 0) || (!gamePlay)) {
         gamePlay = false
-        clearInterval(arrTimerID[IndexGameCycle]['timerID'])
-        arrTimerID.splice(arrTimerID[IndexGameCycle], 1)
         endGame()
         return
       }
@@ -179,22 +191,35 @@ function init() {
   }
 
   function addVirusCharacters(virus){
+    
     const virusName = virus['name']
-    const IndexCharacter = addTimerObj(virusName)
-
     addCharacter(virus)
-    // console.log(virus)
-    arrTimerID[IndexCharacter]['timerID'] = setInterval(()=>{
 
-      moveObj(virus)
+    const indexOfTimer = addTimerObj(virusName)
+    arrTimerID[indexOfTimer]['timerID'] = setInterval(()=>{
+      const virusEvaporates = false
 
       if (!gamePlay){
-        clearInterval(arrTimerID[IndexCharacter]['timerID'])
-        arrTimerID.splice(arrTimerID[IndexCharacter], 1)
-        console.log('arrTimerID', arrTimerID)
+        // indexOfTimer = arrTimerID.map(function(e) { 
+        //   return e.name 
+        // }).indexOf(virusName)
+        // console.log('Add virusC timerID:', arrTimerID)
+        // console.log(indexOfTimer)
+        // if (indexOfTimer >= 0) {
+        //   clearInterval(arrTimerID[indexOfTimer]['timerID'])
+        //   const removed = arrTimerID.splice(arrTimerID[indexOfTimer], 1)
+        //   console.log(removed)
+        // }
+        return
       }
+      if (virusEvaporates){
+        removeCharacter(virus)
+        redV.position = virusStartPosition
+        setTimeout((console.log('working')), 5000)
+      }
+      moveObj(virus)
 
-    },500)
+    }, 500)
 
   }
 
@@ -263,16 +288,18 @@ function init() {
 
   function endGame(){
     console.log('Game Ended Function')
-
     spanSubTitle.textContent = 'Game Over'
     spanGameCycle.textContent = 'zero'
-    arrTimerID.forEach(element => {
-      clearInterval(arrTimerID[0]['timerID'])
-      arrTimerID.splice(element, 1)
-    })
 
     removeCharacter(redV)
+    removeCharacter(greenV)
+    removeCharacter(blueV)
     removeCharacter(whenuaH)
+
+    for (let i = arrTimerID.length - 1; i >= 0; i-- ){
+      clearInterval(arrTimerID[i]['timerID'])
+      arrTimerID.splice(i, 1)
+    }
 
     whenuaH.position = whenuaHStartPosition
     redV.position = virusStartPosition
