@@ -53,3 +53,6 @@ p {
   height: 8%;
   width: 8%;
 }
+.gameCycleMsg {
+  display: none;
+}

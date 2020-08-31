@@ -84,7 +84,7 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, false, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
   const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
   const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
@@ -97,7 +97,7 @@ function init() {
   const virusStartPosition = 65
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
-  const starterGameCycle = 3
+  const starterGameCycle = 3  
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + 1
@@ -144,7 +144,7 @@ function init() {
   function addCharacter(character){
     if (gamePlay){
       cells[character.position].classList.add(character.name)
-      console.log('add/move/reapply Character: ', character.name)
+      console.log('add/move Character: ', character.name)
       cells[character.position].style.backgroundColor  = character.color
       cells[character.position].style.background  = character.image
       cells[character.position].style.backgroundSize =  character.imageSize
@@ -152,22 +152,34 @@ function init() {
   }
 
   function removeCharacter(character){
-    cells[character.position].classList.remove(character.name)
     let classList = cells[character.position].classList.value
-    console.log(classList)
-    // removed = classList.slice(0, classList.search(' '))
-    classList = classList.split(' ')
-    console.log(classList, typeof(classList))
+    cells[character.position].classList.remove(character.name)
+    classList = cells[character.position].classList.value
+    classList = classList.split(' ')    
     if (classList.length === 1){
       cells[character.position].style.background = ''
       cells[character.position].style.backgroundColor = getColor(currentGridLayout.design[character.position])
     } else {
+      classList.splice(0, 1)
+      const classListObj = []
       classList.forEach(element => {
-        console.log(arrCharacter[element]['type'] )
-        if (arrCharacter[element]['type'] === 'virus'){
-          addCharacter(element)
+        let charObj = {}
+        for (let i = 0; i < arrCharacter.length; i++){
+          if (element === arrCharacter[i].name) {
+            charObj = arrCharacter[i]
+          }
         }
+        classListObj.push(charObj)
       })
+      if (classListObj.length >= 1){
+        if (classListObj.length > 1) {
+          console.log('classListObj: ', classListObj)
+          console.log(classListObj[0].name, ' wins image display')
+        }
+        cells[classListObj[0].position].style.backgroundColor  = classListObj[0].color
+        cells[classListObj[0].position].style.background  = classListObj[0].image
+        cells[classListObj[0].position].style.backgroundSize =  classListObj[0].imageSize
+      }
     }
   }
 
@@ -288,12 +300,20 @@ function init() {
   function checkForAnotherChar(character){
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       if ((character.name !== arrCharacter[i].name) && (character.position === arrCharacter[i].position) && (character.type !== arrCharacter[i].type) && (character.vulnerable !== arrCharacter[i].vulnerable)) {
-        console.log(character.position, character.vulnerable, arrCharacter[i].name)
+        console.log(character.position, character.name, 'vuln: ', character.vulnerable, ' vs ', arrCharacter[i].name)
         if (((character.type === 'hero') && (character.vulnerable)) || ((arrCharacter[i].type === 'hero') && (arrCharacter[i].vulnerable))){
           const cycle = Number(spanGameCycle.textContent)
           if (cycle >= 2){
             spanGameCycle.textContent = cycle - 1
             console.log('hero looses life.')
+            if (character.type === 'hero') {
+              character.position = whenuaHStartPosition
+            } else {
+              removeCharacter(arrCharacter[i])
+              arrCharacter[i].position = whenuaHStartPosition
+              addCharacter(arrCharacter[i])
+            }
+            // window.alert('Hero looses a life, back to the start point!')
           } else {
             gamePlay = false
             spanGameCycle.textContent = 'zero'
@@ -321,7 +341,7 @@ function init() {
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
       arrCharacter[i].life = true
-      arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition) : arrCharacter[i].position = whenuaHStartPosition
+      arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + 1) : arrCharacter[i].position = whenuaHStartPosition
     }
 
     for (let i = arrTimerID.length - 1; i >= 0; i-- ){
