@@ -144,7 +144,7 @@ function init() {
   function addCharacter(character){
     if (gamePlay){
       cells[character.position].classList.add(character.name)
-      console.log('add/move Character: ', character.name)
+      console.log('add/move/reapply Character: ', character.name)
       cells[character.position].style.backgroundColor  = character.color
       cells[character.position].style.background  = character.image
       cells[character.position].style.backgroundSize =  character.imageSize
@@ -152,15 +152,23 @@ function init() {
   }
 
   function removeCharacter(character){
+    cells[character.position].classList.remove(character.name)
     let classList = cells[character.position].classList.value
     console.log(classList)
-    if (classList.includes(' ')) {
-      classList = classList.slice(0, classList.search(' '))
+    // removed = classList.slice(0, classList.search(' '))
+    classList = classList.split(' ')
+    console.log(classList, typeof(classList))
+    if (classList.length === 1){
+      cells[character.position].style.background = ''
+      cells[character.position].style.backgroundColor = getColor(currentGridLayout.design[character.position])
+    } else {
+      classList.forEach(element => {
+        console.log(arrCharacter[element]['type'] )
+        if (arrCharacter[element]['type'] === 'virus'){
+          addCharacter(element)
+        }
+      })
     }
-    console.log(classList)
-    cells[character.position].classList.remove(character.name)
-    cells[character.position].style.background = ''
-    cells[character.position].style.backgroundColor  = getColor(classList)
   }
 
   function gameTimer(){
@@ -300,9 +308,10 @@ function init() {
 
   function virusExpire(character){
     console.log(character.name, ': virus expires')
-    character.position = virusStartPosition
     character.life = false
     removeCharacter(character)
+    character.position = virusStartPosition
+    cells[character.position].classList.add(character.name)
   }
 
   function endGame(){
