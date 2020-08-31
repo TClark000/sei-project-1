@@ -84,25 +84,25 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, false, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
   const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 2000, true, 100, false, 'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
+  const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
   const starterGameTime = 20 //overall time allowed for the game
   let gameTime = starterGameTime
   const whenuaHStartPosition = 122
-  const virusStartPosition = 66
+  const virusStartPosition = 65
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
   const starterGameCycle = 3
 
   whenuaH.position = whenuaHStartPosition
-  redV.position = virusStartPosition
-  greenV.position = virusStartPosition + 12
-  blueV.position = virusStartPosition - 1
+  redV.position = virusStartPosition + 1
+  greenV.position = virusStartPosition + 13
+  blueV.position = virusStartPosition + 1
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -142,18 +142,22 @@ function init() {
   }
 
   function addCharacter(character){
-    cells[character.position].classList.add(character.name)
-    console.log('add/move Character: ', character.name)
-    cells[character.position].style.backgroundColor  = character.color
-    cells[character.position].style.background  = character.image
-    cells[character.position].style.backgroundSize =  character.imageSize
+    if (gamePlay){
+      cells[character.position].classList.add(character.name)
+      console.log('add/move Character: ', character.name)
+      cells[character.position].style.backgroundColor  = character.color
+      cells[character.position].style.background  = character.image
+      cells[character.position].style.backgroundSize =  character.imageSize
+    }
   }
 
   function removeCharacter(character){
     let classList = cells[character.position].classList.value
+    console.log(classList)
     if (classList.includes(' ')) {
       classList = classList.slice(0, classList.search(' '))
     }
+    console.log(classList)
     cells[character.position].classList.remove(character.name)
     cells[character.position].style.background = ''
     cells[character.position].style.backgroundColor  = getColor(classList)
@@ -195,23 +199,15 @@ function init() {
     const virusName = virus['name']
     addCharacter(virus)
     const indexOfTimer = addTimerObj(virusName)
-
     arrTimerID[indexOfTimer]['timerID'] = setInterval(()=>{
       if ((!gamePlay) || (!virus.life)) {
         // indexOfTimer = arrTimerID.map(function(e) { 
         //   return e.name 
         // }).indexOf(virusName)
-        // console.log('Add virusC timerID:', arrTimerID)
-        // console.log(indexOfTimer)
-        // if (indexOfTimer >= 0) {
-        //   clearInterval(arrTimerID[indexOfTimer]['timerID'])
         //   const removed = arrTimerID.splice(arrTimerID[indexOfTimer], 1)
-        //   console.log(removed)
-        // }
         return
       }
       moveObj(virus)
-
     }, virus.speed)
   }
 
@@ -245,7 +241,7 @@ function init() {
     // console.log(arrRandomPosition)
     name.position = arrRandomPosition[0]
     checkForAnotherChar(name)
-    if (name.life) {
+    if (name.life && gamePlay) {
       addCharacter(name)
     }
   }
@@ -279,35 +275,34 @@ function init() {
         addCharacter(param1)
       }
     }
-
   }
 
   function checkForAnotherChar(character){
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
-      if (character.name !== arrCharacter[i].name){
-        if ((character.position === arrCharacter[i].position) && (character.vulnerable) && (arrCharacter[i].type !== 'hero') ) {
-          console.log(character.position, arrCharacter[i].position, character.vulnerable, arrCharacter[i].type !== 'hero')
-          character.life = false
-          if (character.type === 'hero'){
-            const cycle = Number(spanGameCycle.textContent)
-            if (cycle >= 2){
-              spanGameCycle.textContent = cycle - 1
-              character.life = true
-              console.log('loose life.')
-            } else {
-              gamePlay = false
-              spanGameCycle.textContent = 'zero'
-              endGame()
-            }
-          } else if ((character.type === 'virus') && (arrCharacter[i].type === 'hero') && (character.vulnerable)){
-            console.log(character.name, ': expires.')
-            character.life = false
-          } else if ((character.type === 'virus') && (arrCharacter[i].type === 'hero') && (arrCharacter[i].vulnerable)){
-            removeLife()
+      if ((character.name !== arrCharacter[i].name) && (character.position === arrCharacter[i].position) && (character.type !== arrCharacter[i].type) && (character.vulnerable !== arrCharacter[i].vulnerable)) {
+        console.log(character.position, character.vulnerable, arrCharacter[i].name)
+        if (((character.type === 'hero') && (character.vulnerable)) || ((arrCharacter[i].type === 'hero') && (arrCharacter[i].vulnerable))){
+          const cycle = Number(spanGameCycle.textContent)
+          if (cycle >= 2){
+            spanGameCycle.textContent = cycle - 1
+            console.log('hero looses life.')
+          } else {
+            gamePlay = false
+            spanGameCycle.textContent = 'zero'
+            endGame()
           }
+        } else if (((character.type === 'virus') && (character.vulnerable)) || ((arrCharacter[i].type === 'virus') && (arrCharacter[i].vulnerable))){
+          character.type === 'virus' ? virusExpire(character) : virusExpire(arrCharacter[i])
         }
       }
     }
+  }
+
+  function virusExpire(character){
+    console.log(character.name, ': virus expires')
+    character.position = virusStartPosition
+    character.life = false
+    removeCharacter(character)
   }
 
   function endGame(){
@@ -316,6 +311,7 @@ function init() {
     
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
+      arrCharacter[i].life = true
       arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition) : arrCharacter[i].position = whenuaHStartPosition
     }
 
