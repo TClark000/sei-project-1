@@ -5,6 +5,7 @@ function init() {
   const grid = document.querySelector('.grid')
   const spanTitle = document.querySelector('#title')
   const spanSubTitle = document.querySelector('#subtitle')
+  let spanPoints = document.querySelector('#points')
   let spanGameTime = document.querySelector('#gameTime')
   const spanGameCycle = document.querySelector('#gameCycle')
   const startButton = document.querySelector('#startButton')
@@ -112,7 +113,7 @@ function init() {
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
-  const potion = new GridObject('potion', 'bonus', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
+  const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
   const starterGameTime = 20 //overall time allowed for the game
   let gameTime = starterGameTime
@@ -165,13 +166,17 @@ function init() {
   }
 
   function addGridObjectVitamin(){
-    const arrVitamin = []
+    let arrVitamin = []
+    const arrPotion = potion.position
     for (let i = 0; i < gridCellCount; i++){
       if (currentGridLayout.design[i] === 'emptySpace') {
         arrVitamin.push(i)
       }
     }
-    const vitamin = new GridObject('vitamin', 'normal', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/music.png") no-repeat center', '30%')
+    arrVitamin = arrVitamin.filter(position => {
+      return !arrPotion.includes(position)
+    })
+    const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/music.png") no-repeat center', '30%')
     arrVitamin.forEach(i => {
       cells[i].classList.add(vitamin.name)
       cells[i].style.background  = vitamin.image
@@ -182,7 +187,6 @@ function init() {
   function addGridObjectPotion(){
     const arrPotion = potion.position
     arrPotion.forEach(i => {
-      // cells[i].classList.remove(vitamin.name)
       cells[i].classList.add(potion.name)
       cells[i].style.background  = potion.image
       cells[i].style.backgroundSize  = potion.imageSize
@@ -201,36 +205,20 @@ function init() {
 
   function removeCharacter(character){
     const removePosition = character.position
-    let classList = cells[removePosition].classList.value
     cells[removePosition].classList.remove(character.name)
-    classList = cells[removePosition].classList.value
+    let classList = cells[removePosition].classList.value
     classList = classList.split(' ')    
     if (classList.length === 1){
       cells[character.position].style.background = ''
       cells[character.position].style.backgroundColor = getColor(currentGridLayout.design[character.position])
     } else {
-      classList.splice(0, 1)
-      const classListObj = []
-      classList.forEach(element => {
-        let charObj = {}
-        for (let i = 0; i < arrCharacter.length; i++){
-          if (element === arrCharacter[i].name) {
-            charObj = arrCharacter[i]
-          }
-        }
-        for (let i = 0; i < arrGridObject.length; i++){
-          if (element === arrGridObject[i].name) {
-            charObj = arrGridObject[i]
-          }
-        }
-        classListObj.push(charObj)
-      })
+      const classListObj = arrSingleCellObj(classList)
       if (classListObj.length >= 1){
-        if (classListObj.length > 1) {
-          console.log('classListObj: ', classListObj)
-          console.log(classListObj[0].name, ' wins image display')
-        }
-        console.log('classListObj: ', classListObj)
+        // if (classListObj.length > 1) {
+        //   console.log('classListObj: ', classListObj)
+        //   console.log(classListObj[0].name, ' wins image display')
+        // }
+        // console.log('classListObj: ', classListObj)
         cells[removePosition].style.backgroundColor  = classListObj[0].color
         cells[removePosition].style.background  = classListObj[0].image
         cells[removePosition].style.backgroundSize =  classListObj[0].imageSize
@@ -238,8 +226,29 @@ function init() {
     }
   }
 
+  function arrSingleCellObj(classList){
+    classList.splice(0, 1) //remove infrastructure element
+    const classListObj = []
+    classList.forEach(element => {
+      let charObj = {}
+      for (let i = 0; i < arrCharacter.length; i++){
+        if (element === arrCharacter[i].name) {
+          charObj = arrCharacter[i]
+        }
+      }
+      for (let i = 0; i < arrGridObject.length; i++){
+        if (element === arrGridObject[i].name) {
+          charObj = arrGridObject[i]
+        }
+      }
+      classListObj.push(charObj)
+    })
+    return classListObj
+  }
+
   function gameTimer(){
     spanSubTitle.textContent = starterSubtitle
+    spanPoints.textContent = 0
     spanGameTime.textContent = starterGameTime
     spanGameCycle.textContent = starterGameCycle
     gameTime = starterGameTime
@@ -349,6 +358,7 @@ function init() {
       if (gamePlay){ 
         addCharacter(param1)
       }
+      checkForGridObject(param1)
     }
   }
 
@@ -379,6 +389,20 @@ function init() {
         }
       }
     }
+  }
+
+  function checkForGridObject(character){
+    const currentPosition = character.position
+    let classList = cells[currentPosition].classList.value
+    classList = classList.split(' ')    
+    const arrClassListObj = arrSingleCellObj(classList)
+    console.log('arrClassListObj: ', arrClassListObj)
+    arrClassListObj.forEach(element => {
+      if (element.type === 'points'){
+        spanPoints.textContent = Number(spanPoints.textContent) + element.points
+        console.log('points!')
+      }
+    })
   }
 
   function virusExpire(character){
@@ -414,7 +438,7 @@ function init() {
   console.log(cells)
   
   addGridObjectVitamin()
-  addGridObjectPotion()
+  addGridObjectPotion(arrGridObject)
   console.log(arrGridObject)
 
   addCharacter(whenuaH)
