@@ -53,18 +53,37 @@ function init() {
     }
   }
 
+  class GridObject {
+    constructor(name, type, gridDesign, position, time, points, color, image, imageSize, imageAuth){
+      this.name = name
+      this.type = type
+      this.gridDesgin = gridDesign
+      this.position = position
+      this.time = time
+      this.points = points
+      this.color = color
+      this.image = image
+      this.imageSize = imageSize
+      this.imageAuth = imageAuth
+      GridObject.addArrGridObject(this)
+    }
+    static addArrGridObject(item){
+      arrGridObject.push(item)
+    }
+  }
+
   //variables
 
   const gridAlpha = new gridLayout('alpha', 1, 12, [
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall', 'emptySpace','wall','wall','wall','wall','secretPassage','wall','emptySpace','wall', 'wall',
-    'emptySpace','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','emptySpace',
+    'cupboard','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','cupboard',
     'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
     'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
     'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
     'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
-    'emptySpace','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','emptySpace',
+    'cupboard','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','cupboard',
     'wall', 'wall', 'emptySpace','wall','secretPassage','wall','wall','wall','wall','emptySpace','wall', 'wall',
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
@@ -76,20 +95,24 @@ function init() {
   const cells = []
   const arrInfra = []
   const arrCharacter = []
+  const arrGridObject = []
   const arrTimerID = []
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue')
   const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'palevioletred')
+  const cupboard = new Infrastructure('cupboard', 'wall', true, 'blue')
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'aqua url("../sei-project-1/images/earth.png") no-repeat center','200%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'lightpink url("../sei-project-1/images/virusred.png") no-repeat center','110%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'palegreen url("../sei-project-1/images/virusgreen.png") no-repeat center','100%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'paleturquoise url("../sei-project-1/images/music.png") no-repeat center','80%', "")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
+
+  const potion = new GridObject('potion', 'bonus', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
   const starterGameTime = 20 //overall time allowed for the game
   let gameTime = starterGameTime
@@ -141,6 +164,31 @@ function init() {
     }
   }
 
+  function addGridObjectVitamin(){
+    const arrVitamin = []
+    for (let i = 0; i < gridCellCount; i++){
+      if (currentGridLayout.design[i] === 'emptySpace') {
+        arrVitamin.push(i)
+      }
+    }
+    const vitamin = new GridObject('vitamin', 'normal', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/music.png") no-repeat center', '30%')
+    arrVitamin.forEach(i => {
+      cells[i].classList.add(vitamin.name)
+      cells[i].style.background  = vitamin.image
+      cells[i].style.backgroundSize  = vitamin.imageSize
+    })
+  }
+
+  function addGridObjectPotion(){
+    const arrPotion = potion.position
+    arrPotion.forEach(i => {
+      // cells[i].classList.remove(vitamin.name)
+      cells[i].classList.add(potion.name)
+      cells[i].style.background  = potion.image
+      cells[i].style.backgroundSize  = potion.imageSize
+    })
+  }
+
   function addCharacter(character){
     if (gamePlay){
       cells[character.position].classList.add(character.name)
@@ -152,9 +200,10 @@ function init() {
   }
 
   function removeCharacter(character){
-    let classList = cells[character.position].classList.value
-    cells[character.position].classList.remove(character.name)
-    classList = cells[character.position].classList.value
+    const removePosition = character.position
+    let classList = cells[removePosition].classList.value
+    cells[removePosition].classList.remove(character.name)
+    classList = cells[removePosition].classList.value
     classList = classList.split(' ')    
     if (classList.length === 1){
       cells[character.position].style.background = ''
@@ -169,6 +218,11 @@ function init() {
             charObj = arrCharacter[i]
           }
         }
+        for (let i = 0; i < arrGridObject.length; i++){
+          if (element === arrGridObject[i].name) {
+            charObj = arrGridObject[i]
+          }
+        }
         classListObj.push(charObj)
       })
       if (classListObj.length >= 1){
@@ -176,9 +230,10 @@ function init() {
           console.log('classListObj: ', classListObj)
           console.log(classListObj[0].name, ' wins image display')
         }
-        cells[classListObj[0].position].style.backgroundColor  = classListObj[0].color
-        cells[classListObj[0].position].style.background  = classListObj[0].image
-        cells[classListObj[0].position].style.backgroundSize =  classListObj[0].imageSize
+        console.log('classListObj: ', classListObj)
+        cells[removePosition].style.backgroundColor  = classListObj[0].color
+        cells[removePosition].style.background  = classListObj[0].image
+        cells[removePosition].style.backgroundSize =  classListObj[0].imageSize
       }
     }
   }
@@ -357,10 +412,13 @@ function init() {
   createGrid()
   addInfrastructure(currentGridLayout)
   console.log(cells)
+  
+  addGridObjectVitamin()
+  addGridObjectPotion()
+  console.log(arrGridObject)
 
   addCharacter(whenuaH)
   
-
   //listeners
   startButton.addEventListener('click', gameTimer)
   document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
