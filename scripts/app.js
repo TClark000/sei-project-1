@@ -129,7 +129,7 @@ function init() {
   const starterGameCycle = 3
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
-  const booChaseHero = true
+  let booChaseHero = false
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + 1
@@ -289,7 +289,7 @@ function init() {
       gameCounter --
       spanGameTime.textContent = gameCounter
       if (gameCounter === 10) {
-        chaseHero()
+        // booChaseHero = true
       }
       if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
@@ -315,7 +315,7 @@ function init() {
         //   const removed = arrTimerID.splice(arrTimerID[indexOfTimer], 1)
         return
       }
-      moveObj(virus)
+      moveVirus(virus)
     }, virus.speed)
   }
 
@@ -328,8 +328,8 @@ function init() {
     return (arrTimerID.indexOf(timerElement))
   }
 
-  function moveObj(name){
-    if ((!gameDelayHeroExpire) && (!booChaseHero)){
+  function moveVirus(name){
+    if (!gameDelayHeroExpire){
       let arrRandomPosition = []
       const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
       removeCharacter(name)
@@ -485,12 +485,6 @@ function init() {
       }
     }, 800)
     console.log(arrCharacter)
-  }
-
-  function chaseHero(){
-
-    const x = whenuaH.position % currentGridLayout.width
-    const y = Math.floor(whenuaH.position / currentGridLayout.width)
   }
 
   function virusExpire(character){
