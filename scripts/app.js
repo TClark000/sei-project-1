@@ -341,7 +341,6 @@ function init() {
   const handleKeyup = function(param1, param2){
     // console.log(event.keyCode, param1, param2)
     if (gamePlay && !gameDelayHeroExpire) {
-      console.log('gameDelayHeroExpire', gameDelayHeroExpire)
       removeCharacter(param1)
 
       const x = param1.position % currentGridLayout.width
@@ -380,9 +379,15 @@ function init() {
           if (cycle >= 2){
             spanGameCycle.textContent = cycle - 1
             console.log('hero expires')
-            removeCharacter(whenuaH) //code only if 1 hero
-            whenuaH.position = whenuaHStartPosition //code only if 1 hero
-            // addCharacter(whenuaH) //code if only 1 hero, add other viruses during delay if life true
+            spanSubTitle.textContent = 'Hero expired, back to the start point!'
+            spanSubTitle.style.fontWeight = 'bold'
+            if (character.type === 'hero'){             
+              removeCharacter(character) 
+              character.position = whenuaHStartPosition 
+            } else {
+              removeCharacter(arrCharacter[i]) 
+              arrCharacter[i].position = whenuaHStartPosition 
+            }
             arrCharacter.forEach(charObj => {
               if (charObj.life === true) { 
                 addCharacter(charObj)
@@ -395,11 +400,11 @@ function init() {
               if (counterGameDelayHeroExpire >= 3){
                 console.log('expire delay')
                 gameDelayHeroExpire = false
+                spanSubTitle.textContent = starterSubtitle
+                spanSubTitle.style.fontWeight = 'initial'
                 clearInterval(GameDelayHeroExpireTimerID)
-                return
               }
             }, 1000)
-            // window.alert('Hero looses a life, back to the start point!')
           } else {
             gamePlay = false
             spanGameCycle.textContent = 'zero'
@@ -440,6 +445,27 @@ function init() {
         charObj.vulnerable = false
       }
     })
+    spanSubTitle.textContent = 'Potion in effect & virus resistant!'
+    spanSubTitle.style.fontWeight = 'bold'
+    let counterPotion = 0
+    const potionTimerID = setInterval(function(){
+      counterPotion ++
+      spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
+      if (counterPotion >= 8){
+        console.log('potion bonus ends')
+        arrCharacter.forEach(charObj => {
+          if (charObj.type === 'virus'){
+            charObj.vulnerable = false
+            console.log(charObj.name, charObj.vulnerable )
+          } else {
+            charObj.vulnerable = true
+          }
+        })
+        spanSubTitle.textContent = starterSubtitle
+        spanSubTitle.style.fontWeight = 'initial'
+        clearInterval(potionTimerID)
+      }
+    }, 800)
     console.log(arrCharacter)
   }
 

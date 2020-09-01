@@ -1,5 +1,6 @@
 body {
-  background-color: paleturquoise;
+  background-color: peachpuff;
+  /* same as hidden class */
 }
 
 .header{
@@ -53,6 +54,11 @@ p {
   height: 8%;
   width: 8%;
 }
-.gameCycleMsg {
-  display: none;
+
+.hidden {
+  color: peachpuff;
+}
+
+#subtitle {
+  color: black;
 }
