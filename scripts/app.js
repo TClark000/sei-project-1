@@ -124,6 +124,7 @@ function init() {
   const starterSubtitle = spanSubTitle.textContent
   const starterGameCycle = 3
   const pointsVirusExpire = 200
+  let gameDelayHeroExpire = false
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + 1
@@ -310,34 +311,37 @@ function init() {
   }
 
   function moveObj(name){
-    let arrRandomPosition = []
-    const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
-    removeCharacter(name)
-    for (let i = 0; i < arrOption.length; i++) {
-      if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
-        arrOption[i][1] = true
+    if (!gameDelayHeroExpire){
+      let arrRandomPosition = []
+      const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
+      removeCharacter(name)
+      for (let i = 0; i < arrOption.length; i++) {
+        if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
+          arrOption[i][1] = true
+        }
       }
-    }
-    const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
-    // console.log(arrPossiblePosition)
-    if (arrPossiblePosition.length > 0) {
-      arrRandomPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
-      name.previousPosition = name.position
-    } else { 
-      arrRandomPosition = [name.previousPosition, true]
-      name.previousPosition = name.Position
-    }
-    // console.log(arrRandomPosition)
-    name.position = arrRandomPosition[0]
-    checkForAnotherChar(name)
-    if (name.life && gamePlay) {
-      addCharacter(name)
+      const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
+      // console.log(arrPossiblePosition)
+      if (arrPossiblePosition.length > 0) {
+        arrRandomPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
+        name.previousPosition = name.position
+      } else { 
+        arrRandomPosition = [name.previousPosition, true]
+        name.previousPosition = name.Position
+      }
+      // console.log(arrRandomPosition)
+      name.position = arrRandomPosition[0]
+      checkForAnotherChar(name)
+      if (name.life && gamePlay) {
+        addCharacter(name)
+      }
     }
   }
 
   const handleKeyup = function(param1, param2){
     // console.log(event.keyCode, param1, param2)
-    if (gamePlay){
+    if (gamePlay && !gameDelayHeroExpire) {
+      console.log('gameDelayHeroExpire', gameDelayHeroExpire)
       removeCharacter(param1)
 
       const x = param1.position % currentGridLayout.width
@@ -375,14 +379,21 @@ function init() {
           const cycle = Number(spanGameCycle.textContent)
           if (cycle >= 2){
             spanGameCycle.textContent = cycle - 1
-            console.log('hero looses life.')
-            if (character.type === 'hero') {
-              character.position = whenuaHStartPosition
-            } else {
-              removeCharacter(arrCharacter[i])
-              arrCharacter[i].position = whenuaHStartPosition
-              addCharacter(arrCharacter[i])
-            }
+            console.log('hero expires')
+            removeCharacter(whenuaH) //code only if 1 hero
+            whenuaH.position = whenuaHStartPosition //code only if 1 hero
+            addCharacter(whenuaH) //code if only 1 hero, add other viruses during delay if life true
+            gameDelayHeroExpire = true 
+            let counterGameDelayHeroExpire = 0
+            const GameDelayHeroExpireTimerID = setInterval(function(){
+              counterGameDelayHeroExpire ++
+              if (counterGameDelayHeroExpire >= 3){
+                console.log('expire delay')
+                gameDelayHeroExpire = false
+                clearInterval(GameDelayHeroExpireTimerID)
+                return
+              }
+            }, 1000)
             // window.alert('Hero looses a life, back to the start point!')
           } else {
             gamePlay = false
