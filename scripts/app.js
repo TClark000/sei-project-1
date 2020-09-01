@@ -117,7 +117,6 @@ function init() {
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
-
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
   const starterGameTime = 40 //overall time allowed for the game
@@ -130,6 +129,7 @@ function init() {
   const starterGameCycle = 3
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
+  const booChaseHero = true
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + 1
@@ -288,6 +288,9 @@ function init() {
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameCounter --
       spanGameTime.textContent = gameCounter
+      if (gameCounter === 10) {
+        chaseHero()
+      }
       if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
         console.log('Game time reached.')
@@ -326,7 +329,7 @@ function init() {
   }
 
   function moveObj(name){
-    if (!gameDelayHeroExpire){
+    if ((!gameDelayHeroExpire) && (!booChaseHero)){
       let arrRandomPosition = []
       const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
       removeCharacter(name)
@@ -482,6 +485,12 @@ function init() {
       }
     }, 800)
     console.log(arrCharacter)
+  }
+
+  function chaseHero(){
+
+    const x = whenuaH.position % currentGridLayout.width
+    const y = Math.floor(whenuaH.position / currentGridLayout.width)
   }
 
   function virusExpire(character){
