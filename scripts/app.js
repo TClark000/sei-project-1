@@ -21,11 +21,13 @@ function init() {
   }
 
   class Infrastructure {
-    constructor(name, type, solid = true, color){
+    constructor(name, type, solid = true, color, image, imageAuth){
       this.name = name
       this.type = type
       this.solid = solid
       this.color = color
+      this.image = image
+      this.imageAuth = imageAuth
       Infrastructure.addArrInfra(this)
     }
     static addArrInfra(item) {
@@ -55,7 +57,7 @@ function init() {
   }
 
   class GridObject {
-    constructor(name, type, gridDesign, position, time, points, color, image, imageSize, imageAuth){
+    constructor(name, type, gridDesign, position, time, points, color, image, imageSize, opacity, imageAuth){
       this.name = name
       this.type = type
       this.gridDesgin = gridDesign
@@ -65,6 +67,7 @@ function init() {
       this.color = color
       this.image = image
       this.imageSize = imageSize
+      this.opacity = opacity
       this.imageAuth = imageAuth
       GridObject.addArrGridObject(this)
     }
@@ -100,11 +103,12 @@ function init() {
   const arrTimerID = []
 
   //objects
-  const wall = new Infrastructure('wall', 'wall', true, 'blue')
-  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'palevioletred')
-  const cupboard = new Infrastructure('cupboard', 'wall', true, 'blue')
-  const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke')
-  const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray')
+  const wall = new Infrastructure('wall', 'wall', true, 'blue', null, null)
+  // const wall = new Infrastructure('wall', 'wall', true, 'blue', 'url("../sei-project-1/images/music.png") right / 600% repeat whitesmoke', null)
+  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'palevioletred', null, null)
+  const cupboard = new Infrastructure('cupboard', 'wall', true, 'blue', null, null)
+  const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
+  const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
   
   const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
@@ -112,6 +116,7 @@ function init() {
   const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
+
 
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
@@ -152,6 +157,14 @@ function init() {
     }
   }
 
+  function getImage(name){
+    for (let i = 0; i < arrInfra.length; i++){
+      if (name === arrInfra[i].name && arrInfra[i].image !== null)  {
+        return arrInfra[i].image
+      }
+    }
+  }
+
   function getSolid(name){
     for (let i = 0; i < arrInfra.length; i++){
       if (name === arrInfra[i].name) {
@@ -165,6 +178,7 @@ function init() {
     for (let i = 0; i < gridCellCount; i++){
       cells[i].classList.add(currentGridLayout.design[i])
       cells[i].style.backgroundColor  = getColor(currentGridLayout.design[i])
+      cells[i].style.background = getImage(currentGridLayout.design[i])
     }
   }
 
@@ -182,11 +196,12 @@ function init() {
     arrVitamin = arrVitamin.filter(position => {
       return position !== whenuaHStartPosition
     })
-    const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/music.png") no-repeat center', '30%')
+    const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/fruit.png") no-repeat center', '40%', '1', "<a href='https://pngtree.com/so/fruits'>fruits png from pngtree.com</a>")
     arrVitamin.forEach(i => {
       cells[i].classList.add(vitamin.name)
       cells[i].style.background  = vitamin.image
       cells[i].style.backgroundSize  = vitamin.imageSize
+      cells[i].style.opacity  = vitamin.opacity
     })
   }
 
