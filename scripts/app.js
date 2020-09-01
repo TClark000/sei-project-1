@@ -115,9 +115,10 @@ function init() {
 
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
-  const starterGameTime = 20 //overall time allowed for the game
-  let gameTime = starterGameTime
+  const starterGameTime = 40 //overall time allowed for the game
+  let gameCounter = starterGameTime
   const whenuaHStartPosition = 122
+  const gamePlacement = true
   const virusStartPosition = 65
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
@@ -176,6 +177,9 @@ function init() {
     arrVitamin = arrVitamin.filter(position => {
       return !arrPotion.includes(position)
     })
+    arrVitamin = arrVitamin.filter(position => {
+      return position !== whenuaHStartPosition
+    })
     const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/music.png") no-repeat center', '30%')
     arrVitamin.forEach(i => {
       cells[i].classList.add(vitamin.name)
@@ -194,7 +198,7 @@ function init() {
   }
 
   function addCharacter(character){
-    if (gamePlay){
+    if (gamePlay || gamePlacement) {
       cells[character.position].classList.add(character.name)
       console.log('add/move Character: ', character.name)
       cells[character.position].style.backgroundColor  = character.color
@@ -251,7 +255,7 @@ function init() {
     spanPoints.textContent = 0
     spanGameTime.textContent = starterGameTime
     spanGameCycle.textContent = starterGameCycle
-    gameTime = starterGameTime
+    gameCounter = starterGameTime
     
     const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
@@ -265,9 +269,9 @@ function init() {
     window.addEventListener('scroll', docuScroll)
 
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
-      gameTime --
-      spanGameTime.textContent = gameTime
-      if ((gameTime <= 0) || (!gamePlay)) {
+      gameCounter --
+      spanGameTime.textContent = gameCounter
+      if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
         console.log('Game time reached.')
         endGame()
@@ -401,6 +405,10 @@ function init() {
       if (element.type === 'points'){
         spanPoints.textContent = Number(spanPoints.textContent) + element.points
         console.log('points!')
+        cells[currentPosition].classList.remove(element.name)
+        if (element.name === 'potion'){
+          console.log('potion!')
+        }
       }
     })
   }
