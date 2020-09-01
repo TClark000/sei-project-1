@@ -34,7 +34,7 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, position, previousPosition, speed, life, strength, vulnerable,color, image, imageSize, imageAuth){
+    constructor(name, type, position, previousPosition, speed, life, strength, vulnerable, color, image, imageSize, imageAuth){
       this.name = name
       this.type = type
       this.position = position
@@ -122,7 +122,8 @@ function init() {
   const virusStartPosition = 65
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
-  const starterGameCycle = 3  
+  const starterGameCycle = 3
+  const pointsVirusExpire = 200
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + 1
@@ -369,8 +370,8 @@ function init() {
   function checkForAnotherChar(character){
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       if ((character.name !== arrCharacter[i].name) && (character.position === arrCharacter[i].position) && (character.type !== arrCharacter[i].type) && (character.vulnerable !== arrCharacter[i].vulnerable)) {
-        console.log(character.position, character.name, 'vuln: ', character.vulnerable, ' vs ', arrCharacter[i].name)
-        if (((character.type === 'hero') && (character.vulnerable)) || ((arrCharacter[i].type === 'hero') && (arrCharacter[i].vulnerable))){
+        console.log(character.position, character.name, 'vuln: ', character.vulnerable, ' vs ', arrCharacter[i].name, arrCharacter[i].vulnerable)
+        if ((character.type === 'hero' && character.vulnerable) || (arrCharacter[i].type === 'hero' && arrCharacter[i].vulnerable)){
           const cycle = Number(spanGameCycle.textContent)
           if (cycle >= 2){
             spanGameCycle.textContent = cycle - 1
@@ -408,13 +409,27 @@ function init() {
         cells[currentPosition].classList.remove(element.name)
         if (element.name === 'potion'){
           console.log('potion!')
+          potionPlay()
         }
       }
     })
   }
 
+  function potionPlay(){
+    arrCharacter.forEach(charObj => {
+      if (charObj.type === 'virus'){
+        charObj.vulnerable = true
+        console.log(charObj.name, charObj.vulnerable )
+      } else {
+        charObj.vulnerable = false
+      }
+    })
+    console.log(arrCharacter)
+  }
+
   function virusExpire(character){
-    console.log(character.name, ': virus expires')
+    console.log(character.name, ': virus expires, points added')
+    spanPoints.textContent = Number(spanPoints.textContent) + pointsVirusExpire
     character.life = false
     removeCharacter(character)
     character.position = virusStartPosition
