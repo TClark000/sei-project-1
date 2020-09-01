@@ -382,7 +382,12 @@ function init() {
             console.log('hero expires')
             removeCharacter(whenuaH) //code only if 1 hero
             whenuaH.position = whenuaHStartPosition //code only if 1 hero
-            addCharacter(whenuaH) //code if only 1 hero, add other viruses during delay if life true
+            // addCharacter(whenuaH) //code if only 1 hero, add other viruses during delay if life true
+            arrCharacter.forEach(charObj => {
+              if (charObj.life === true) { 
+                addCharacter(charObj)
+              }
+            })
             gameDelayHeroExpire = true 
             let counterGameDelayHeroExpire = 0
             const GameDelayHeroExpireTimerID = setInterval(function(){
