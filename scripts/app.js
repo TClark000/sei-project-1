@@ -330,25 +330,44 @@ function init() {
 
   function moveVirus(name){
     if (!gameDelayHeroExpire){
-      let arrRandomPosition = []
-      const arrOption = [[name.position + 1, false],[name.position - 1, false ] , [name.position - currentGridLayout.width, false], [name.position + currentGridLayout.width, false]]
+      let arrNewPosition = []
+      const arrOption = [[name.position - 1, false, ''],[name.position + 1, false, ''] , [name.position - currentGridLayout.width, false, ''], [name.position + currentGridLayout.width, false, '']]
       removeCharacter(name)
       for (let i = 0; i < arrOption.length; i++) {
         if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
           arrOption[i][1] = true
+          switch (i){
+            case 0: 
+              arrOption[i][2] = 'left'
+              break
+            case 1: 
+              arrOption[i][2] = 'right'
+              break
+            case 2: 
+              arrOption[i][2] = 'upper'
+              break
+            case 3: 
+              arrOption[i][2] = 'lower'
+              break
+            default:
+              break
+          }
         }
       }
       const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
-      // console.log(arrPossiblePosition)
-      if (arrPossiblePosition.length > 0) {
-        arrRandomPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
-        name.previousPosition = name.position
-      } else { 
-        arrRandomPosition = [name.previousPosition, true]
-        name.previousPosition = name.Position
+      console.log('Current position:', name.position)
+      console.log('Poss position:', arrPossiblePosition)
+      if (arrPossiblePosition === []) {
+        arrNewPosition = [name.previousPosition, true]
       }
-      // console.log(arrRandomPosition)
-      name.position = arrRandomPosition[0]
+      if (!booChaseHero){ 
+        arrNewPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
+      } else {
+        console.log()
+      }
+      // console.log(arrNewPosition)
+      name.previousPosition = name.position
+      name.position = arrNewPosition[0]
       checkForAnotherChar(name)
       if (name.life && gamePlay) {
         addCharacter(name)
