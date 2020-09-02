@@ -626,6 +626,20 @@ function init() {
     removeCharacter(character)
     character.position = virusStartPosition
     cells[character.position].classList.add(character.name)
+    console.log(character.name.slice(0, -1 ))
+    spanSubTitle.textContent = 'The ' + (character.name.slice( 0, -1 ))  + ' virus expired, points added!'
+    spanSubTitle.style.fontWeight = 'bold'
+    let counterVirusExpire = 0
+    const virusExpiredTimerID = setInterval(function(){
+      counterVirusExpire ++
+      spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
+      if (counterVirusExpire >= 4){
+        spanSubTitle.textContent = starterSubtitle
+        spanSubTitle.style.fontWeight = 'initial'
+        clearInterval(virusExpiredTimerID )
+      }
+    }, 1200)
+
   }
 
   function determineGamePoints(){
@@ -643,7 +657,6 @@ function init() {
     const vitaminTally = cells.filter(cell => {
       return (cell.classList.value).includes('vitamin')
     })
-    console.log(vitaminTally.length, arrGridObject[1].position)
     const consumedVitamin = arrGridObject[1].position.length - vitaminTally.length
     spanSubTitle.textContent = 'Game Over | ' + consumedVitamin + ' fruit bowls | ' + virusTally + ' viruses' 
     
