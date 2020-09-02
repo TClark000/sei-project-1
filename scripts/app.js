@@ -137,9 +137,9 @@ function init() {
   const virusSpeedChaseHero = 300
 
   whenuaH.position = whenuaHStartPosition
-  redV.position = virusStartPosition 
-  greenV.position = virusStartPosition 
-  blueV.position = virusStartPosition
+  redV.position = virusStartPosition + Math.floor(Math.random() * 2)
+  greenV.position = virusStartPosition + Math.floor(Math.random() * 2)
+  blueV.position = virusStartPosition + Math.floor(Math.random() * 2)
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -277,11 +277,16 @@ function init() {
     if (gamePlay) {
       return
     }
+    addGridObjectVitamin()
+    addGridObjectPotion(arrGridObject)
+
     spanSubTitle.textContent = starterSubtitle
-    spanPoints.textContent = 0
+    spanPoints.textContent = '0'
     spanGameTime.textContent = starterGameTime
     spanGameCycle.textContent = starterGameCycle
     gameCounter = starterGameTime
+    virusTally = 0
+
     const gameHighestScore = determineGamePoints()
     console.log('Highest score available: ', gameHighestScore)
     const timerName = 'gameTime'
@@ -301,7 +306,7 @@ function init() {
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameCounter --
       spanGameTime.textContent = gameCounter
-      if (gameCounter === 20) {
+      if (gameCounter === 25) {
         booChaseHero = true
         redV.speed = virusSpeedChaseHero 
         greenV.speed = virusSpeedChaseHero 
@@ -663,7 +668,7 @@ function init() {
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
       arrCharacter[i].life = true
-      arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + 1) : arrCharacter[i].position = whenuaHStartPosition
+      arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + Math.floor(Math.random() * 2)) : arrCharacter[i].position = whenuaHStartPosition
     }
 
     for (let i = arrTimerID.length - 1; i >= 0; i-- ){
