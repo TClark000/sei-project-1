@@ -113,8 +113,8 @@ function init() {
   
   const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
   const redV = new Character('redV', 'virus', 0, 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 0,1000, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1500, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 0, 900, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1200, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
@@ -124,21 +124,20 @@ function init() {
   let gameCounter = starterGameTime
   const whenuaHStartPosition = 122
   const gamePlacement = true
-  const virusStartPosition = 66
+  const virusStartPosition = 65 //within a wall lair
+  const virusEndPosition = 65
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
   const starterGameCycle = 3
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
   let booChaseHero = false
+  const virusSpeedChaseHero = 300
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition 
   greenV.position = virusStartPosition 
   blueV.position = virusStartPosition
-  redV.previousPosition = virusStartPosition + 1
-  greenV.previousPosition = virusStartPosition + 1
-  blueV.previousPosition = virusStartPosition + 1
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -295,8 +294,11 @@ function init() {
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameCounter --
       spanGameTime.textContent = gameCounter
-      if (gameCounter === 10) {
-        // booChaseHero = true
+      if (gameCounter === 15) {
+        booChaseHero = true
+        redV.speed = virusSpeedChaseHero 
+        greenV.speed = virusSpeedChaseHero 
+        blueV.speed = virusSpeedChaseHero
       }
       if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
@@ -316,10 +318,6 @@ function init() {
     const indexOfTimer = addTimerObj(virusName)
     arrTimerID[indexOfTimer]['timerID'] = setInterval(()=>{
       if ((!gamePlay) || (!virus.life)) {
-        // indexOfTimer = arrTimerID.map(function(e) { 
-        //   return e.name 
-        // }).indexOf(virusName)
-        //   const removed = arrTimerID.splice(arrTimerID[indexOfTimer], 1)
         return
       }
       moveVirus(virus)
@@ -602,7 +600,7 @@ function init() {
     spanPoints.textContent = Number(spanPoints.textContent) + pointsVirusExpire
     character.life = false
     removeCharacter(character)
-    character.position = virusStartPosition
+    character.position = virusEndPosition
     cells[character.position].classList.add(character.name)
   }
 
