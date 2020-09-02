@@ -125,6 +125,8 @@ function init() {
   const starterGameTime = 40 //overall time allowed for the game
   let gameCounter = starterGameTime
   const whenuaHStartPosition = 122
+  const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
+  const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
   const gamePlacement = true
   const virusStartPosition = 65 //within a wall lair
   let virusTally = 0
@@ -210,6 +212,16 @@ function init() {
     })
   }
 
+  function refreshGridObjectVitamin(){
+    const arrVitamin = arrGridObject[1].position
+    arrVitamin.forEach(position => {
+      cells[position].classList.add(arrGridObject[1].name)
+      cells[position].style.background  = arrGridObject[1].image
+      cells[position].style.backgroundSize  = arrGridObject[1].imageSize
+      cells[position].style.opacity  = arrGridObject[1].opacity
+    })
+  }
+
   function addGridObjectPotion(){
     const arrPotion = potion.position
     arrPotion.forEach(i => {
@@ -217,6 +229,22 @@ function init() {
       cells[i].style.background  = potion.image
       cells[i].style.backgroundSize  = potion.imageSize
     })
+  }
+
+  function addSecondHeroImage(character){
+    const heroImage = 'heroImage'
+    const indexheroImage = addTimerObj(heroImage)
+    let counterImage = 0
+    arrTimerID[indexheroImage]['timerID'] = setInterval(()=>{
+      counterImage++
+      if (counterImage % 2  === 0){
+        whenuaH.image = whenuaHSecondImage
+      } else {
+        whenuaH.image = whenuaHFirstImage
+      }
+      cells[character.position].style.background  = character.image
+      cells[character.position].style.backgroundSize =  character.imageSize
+    }, 300)
   }
 
   function addCharacter(character){
@@ -282,7 +310,7 @@ function init() {
     if (gamePlay) {
       return
     }
-    addGridObjectVitamin()
+    refreshGridObjectVitamin(arrGridObject)
     addGridObjectPotion(arrGridObject)
 
     spanSubTitle.textContent = starterSubtitle
@@ -296,6 +324,8 @@ function init() {
     console.log('Highest score available: ', gameHighestScore)
     const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
+
+    addSecondHeroImage(whenuaH)
     
     gamePlay = true
     
@@ -317,9 +347,9 @@ function init() {
         greenV.speed = virusSpeedChaseHero 
         blueV.speed = virusSpeedChaseHero
       }
-      if (spanPoints.textContent === gameHighestScore && currentGridLayout.name === 'alpha'){
+      if (Number(spanPoints.textContent) === gameHighestScore && currentGridLayout.name === 'alpha'){
         gamePlay = false
-        spanTitle.textContent = 'Wow you won, with the highest the score and ' + virusTally + ' viruses.' 
+        spanTitle.textContent = 'Wow you won, with the highest the score and ' + virusTally + ' viruses!' 
         console.log('Wow you won!')
         endGame()
         return
