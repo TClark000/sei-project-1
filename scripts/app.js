@@ -127,7 +127,7 @@ function init() {
   const whenuaHStartPosition = 122
   const gamePlacement = true
   const virusStartPosition = 65 //within a wall lair
-  const virusEndPosition = 65
+  let virusTally = 0
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
   const starterGameCycle = 3
@@ -282,16 +282,17 @@ function init() {
     spanGameTime.textContent = starterGameTime
     spanGameCycle.textContent = starterGameCycle
     gameCounter = starterGameTime
-    
+    const gameHighestScore = determineGamePoints()
+    console.log('Highest score available: ', gameHighestScore)
     const timerName = 'gameTime'
     const indexGameCycle = addTimerObj(timerName)
-
+    
     gamePlay = true
     
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
     }
-    // comment out for statment above for testing
+    // comment out for statement above for testing
     // addVirusCharacters(redV) 
     // addCharacter(whenuaH)
 
@@ -305,6 +306,13 @@ function init() {
         redV.speed = virusSpeedChaseHero 
         greenV.speed = virusSpeedChaseHero 
         blueV.speed = virusSpeedChaseHero
+      }
+      if (spanPoints.textContent === gameHighestScore && currentGridLayout.name === 'alpha'){
+        gamePlay = false
+        spanTitle.textContent = 'Wow you won, with the highest the score and ' + virusTally + ' viruses.' 
+        console.log('Wow you won!')
+        endGame()
+        return
       }
       if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
@@ -614,14 +622,30 @@ function init() {
     console.log(character.name, ': virus expires, points added')
     spanPoints.textContent = Number(spanPoints.textContent) + pointsVirusExpire
     character.life = false
+    virusTally++
     removeCharacter(character)
-    character.position = virusEndPosition
+    character.position = virusStartPosition
     cells[character.position].classList.add(character.name)
+  }
+
+  function determineGamePoints(){
+    let arrPointsPerGridObject = []
+    arrPointsPerGridObject = arrGridObject.map(element => {
+      return (Number(element.position.length) * Number(element.points))
+    })
+    const sumPointsPerGridObject = arrPointsPerGridObject.reduce((a,b) => a + b, 0)
+    const gameHighestScore = sumPointsPerGridObject + (arrCharacter.filter(element => element.type === 'virus').length * pointsVirusExpire)
+    return gameHighestScore
   }
 
   function endGame(){
     console.log('Game Ended Function')
-    spanSubTitle.textContent = 'Game Over'  
+    const vitaminTally = cells.filter(cell => {
+      return (cell.classList.value).includes('vitamin')
+    })
+    console.log(vitaminTally.length, arrGridObject[1].position)
+    const consumedVitamin = arrGridObject[1].position.length - vitaminTally.length
+    spanSubTitle.textContent = 'Game Over | ' + consumedVitamin + ' fruit bowls | ' + virusTally + ' viruses' 
     
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
