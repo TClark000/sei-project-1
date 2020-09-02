@@ -105,8 +105,8 @@ function init() {
 
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue', null, null)
-  // const wall = new Infrastructure('wall', 'wall', true, 'blue', 'url("../sei-project-1/images/music.png") right / 600% repeat whitesmoke', null)
-  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'palevioletred', null, null)
+  // const wall = new Infrastructure('wall', 'wall', true, 'blue', 'url("../sei-project-1/images/wall.png") right / 100% repeat whitesmoke', "<a href='https://pngtree.com/so/green'>green png from pngtree.com</a>")
+  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'blue', 'url("../sei-project-1/images/bottle.png") right / 100% repeat whitesmoke', "<a href='https://pngtree.com/so/yellow'>yellow png from pngtree.com</a>")
   const cupboard = new Infrastructure('cupboard', 'wall', true, 'blue', null, null)
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
@@ -117,6 +117,8 @@ function init() {
   const blueV = new Character('blueV', 'virus', 0, 0, 0, 1200, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
+  // bottle 
+  
 
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
@@ -271,6 +273,10 @@ function init() {
   }
 
   function gameTimer(){
+
+    if (gamePlay) {
+      return
+    }
     spanSubTitle.textContent = starterSubtitle
     spanPoints.textContent = 0
     spanGameTime.textContent = starterGameTime
@@ -294,7 +300,7 @@ function init() {
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameCounter --
       spanGameTime.textContent = gameCounter
-      if (gameCounter === 15) {
+      if (gameCounter === 20) {
         booChaseHero = true
         redV.speed = virusSpeedChaseHero 
         greenV.speed = virusSpeedChaseHero 
