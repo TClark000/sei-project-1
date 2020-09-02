@@ -60,7 +60,7 @@ function init() {
     constructor(name, type, gridDesign, position, time, points, color, image, imageSize, opacity, imageAuth){
       this.name = name
       this.type = type
-      this.gridDesgin = gridDesign
+      this.gridDesign = gridDesign
       this.position = position
       this.time = time
       this.points = points
@@ -331,10 +331,12 @@ function init() {
   function moveVirus(name){
     if (!gameDelayHeroExpire){
       let arrNewPosition = []
+      let arrPossiblePosition = []
       const arrOption = [[name.position - 1, false, ''],[name.position + 1, false, ''] , [name.position - currentGridLayout.width, false, ''], [name.position + currentGridLayout.width, false, '']]
       removeCharacter(name)
       for (let i = 0; i < arrOption.length; i++) {
-        if ((arrOption[i][0] !== name.previousPosition) && (!getSolid(currentGridLayout.design[arrOption[i][0]]))){
+        // (arrOption[i][0] !== name.previousPosition) 
+        if (!getSolid(currentGridLayout.design[arrOption[i][0]])){
           arrOption[i][1] = true
           switch (i){
             case 0: 
@@ -354,20 +356,70 @@ function init() {
           }
         }
       }
-      const arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
       console.log('Current position:', name.position)
+      console.log('Previous Pos: ', name.previousPosition)
+      arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
       console.log('Poss position:', arrPossiblePosition)
-      if (arrPossiblePosition === []) {
-        arrNewPosition = [name.previousPosition, true]
+      if (arrPossiblePosition.length === 1) {
+        const holdingPosition = name.position
+        name.position = name.previousPosition
+        name.previousPosition = holdingPosition
       }
-      if (!booChaseHero){ 
+
+      if ((!booChaseHero) && (arrPossiblePosition.length > 1)) {
+        arrPossiblePosition = arrPossiblePosition.filter(positionValue => positionValue[0] !== name.previousPosition )
         arrNewPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
-      } else {
-        console.log()
+        console.log(arrNewPosition, arrNewPosition[0])
+        name.previousPosition = name.position
+        name.position = arrNewPosition[0]
+      } else if ((booChaseHero) && (arrPossiblePosition.length > 1)) {
+        const xH = whenuaH.position % currentGridLayout.width
+        const yH = Math.floor(whenuaH.position / currentGridLayout.width)
+        const xV = name.position % currentGridLayout.width
+        const yV = Math.floor(name.position / currentGridLayout.width)
+
+        let xHV = ''
+        let yHV = ''
+        xH <= xV ? (xHV = 'xH < xV') : (xHV = 'xH > xV')
+        yH <= yV ? (yHV = 'yH < yV') : (yHV = 'yH > yV')
+        const quadrantExp = xHV + ', ' + yHV
+        console.log(quadrantExp)
+        let heroQuadrant = []
+        switch (quadrantExp ){
+          case 'xH < xV, yH < yV':
+            if (Math.abs(xH - xV) > Math.abs(yH - yV)){
+              heroQuadrant = ['left', 'upper']
+            } else {
+              heroQuadrant = ['upper', 'left']
+            }
+            break
+          case 'xH > xV, yH < yV':
+            if (Math.abs(xH - xV) > Math.abs(yH - yV)){
+              heroQuadrant = ['right', 'upper']
+            } else {
+              heroQuadrant = ['upper', 'right']
+            }
+            break
+          case 'xH < xV, yH > yV':
+            if (Math.abs(xH - xV) > Math.abs(yH - yV)){
+              heroQuadrant = ['left', 'lower']
+            } else {
+              heroQuadrant = ['lower', 'left']
+            }
+            break
+          case 'xH > xV, yH > yV':
+            if (Math.abs(xH - xV) > Math.abs(yH - yV)){
+              heroQuadrant = ['right', 'lower']
+            } else {
+              heroQuadrant = ['lower', 'right']
+            }
+            break
+          default:
+            break
+        }
+        name.previousPosition = name.position
+        name.position = arrNewPosition[0]
       }
-      // console.log(arrNewPosition)
-      name.previousPosition = name.position
-      name.position = arrNewPosition[0]
       checkForAnotherChar(name)
       if (name.life && gamePlay) {
         addCharacter(name)
