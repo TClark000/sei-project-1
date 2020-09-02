@@ -36,11 +36,12 @@ function init() {
   }
 
   class Character {
-    constructor(name, type, position, previousPosition, speed, life, strength, vulnerable, color, image, imageSize, imageAuth){
+    constructor(name, type, position, previousPosition, previousPrePosition, speed, life, strength, vulnerable, color, image, imageSize, imageAuth){
       this.name = name
       this.type = type
       this.position = position
       this.previousPosition = previousPosition
+      this.previousPrePosition = previousPrePosition
       this.speed = speed
       this.life = life
       this.strength = strength
@@ -110,10 +111,10 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 1000, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 1500, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 0,1000, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1500, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
 
@@ -129,7 +130,7 @@ function init() {
   const starterGameCycle = 3
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
-  let booChaseHero = true
+  let booChaseHero = false
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition 
@@ -282,11 +283,12 @@ function init() {
 
     gamePlay = true
     
-    // for (let i = arrCharacter.length - 1; i >= 0; i-- ){
-    //   arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
-    // }
-    addVirusCharacters(redV)
-    addCharacter(whenuaH)
+    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
+      arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
+    }
+    // comment out for statment above for testing
+    // addVirusCharacters(redV) 
+    // addCharacter(whenuaH)
 
     window.addEventListener('scroll', docuScroll)
 
@@ -366,15 +368,18 @@ function init() {
       arrPossiblePosition = arrOption.filter(solid => solid[1] === true )
       console.log('Poss position:', arrPossiblePosition)
       if (arrPossiblePosition.length === 1) {
+        name.previousPrePosition = name.previousPosition
         const holdingPosition = name.position
         name.position = name.previousPosition
         name.previousPosition = holdingPosition
+        
       }
       const arrPossiblePositionWithoutPrior = arrOption.filter(element => ((element[1] === true)  && (element[0] !== name.previousPosition)) )
       console.log('arrPossiblePositionWithoutPrior', arrPossiblePositionWithoutPrior)
       if ((!booChaseHero) && (arrPossiblePositionWithoutPrior.length >= 1)) {
         arrNewPosition = (arrPossiblePositionWithoutPrior[Math.floor(Math.random() * arrPossiblePositionWithoutPrior.length)])
         console.log(arrNewPosition, arrNewPosition[0])
+        name.previousPrePosition = name.previousPosition
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
         console.log(name.name, 'New:', name.position,  'prev:', name.previousPosition )
@@ -433,23 +438,24 @@ function init() {
             foundPref = true
           }
         })
-        console.log(foundPref,  'prePos: ', name.previousPosition, 'curPos:', name.position)
+        console.log(foundPref, 'curPos:', name.position, 'prePos: ', name.previousPosition,  'pp:', name.previousPrePosition)
         if (!foundPref){
           arrPossiblePosition.forEach(element => {
             if (element[2] === heroQuadrant[1]){
               arrNewPosition = element
               foundPref = true
-              console.log('2nd check', arrNewPosition)
+              console.log('2nd check', arrNewPosition, 'PrePrev:', name.previousPrePosition)
             }
           })
         }
-        if (((foundPref) && (arrNewPosition[0] === name.previousPrePosition) && (arrPossiblePositionWithoutPrior.length === 1)) || ((!foundPref) && (arrPossiblePositionWithoutPrior.length === 1))){
+        if (((foundPref) && (name.position === name.previousPrePosition) && (arrPossiblePositionWithoutPrior.length === 1)) || ((!foundPref) && (arrPossiblePositionWithoutPrior.length === 1))){
           arrNewPosition = arrPossiblePositionWithoutPrior[0]
           console.log('3rd check: ', arrNewPosition, arrPossiblePositionWithoutPrior[0], arrNewPosition[0])
         } else if (!foundPref) {
           arrNewPosition = [name.previousPosition, true]
           console.log('Default to previous location: ', arrNewPosition)
         }
+        name.previousPrePosition = name.previousPosition
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
       }
