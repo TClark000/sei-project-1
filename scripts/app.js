@@ -123,7 +123,7 @@ function init() {
   let gameCounter = starterGameTime
   const whenuaHStartPosition = 122
   const gamePlacement = true
-  const virusStartPosition = 65
+  const virusStartPosition = 66
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
   const starterGameCycle = 3
@@ -132,9 +132,12 @@ function init() {
   let booChaseHero = false
 
   whenuaH.position = whenuaHStartPosition
-  redV.position = virusStartPosition + 1
-  greenV.position = virusStartPosition + 13
-  blueV.position = virusStartPosition + 1
+  redV.position = virusStartPosition 
+  greenV.position = virusStartPosition 
+  blueV.position = virusStartPosition
+  redV.previousPosition = virusStartPosition + 1
+  greenV.previousPosition = virusStartPosition + 1
+  blueV.previousPosition = virusStartPosition + 1
 
   console.log(arrInfra)
   console.log(arrCharacter)
@@ -279,9 +282,11 @@ function init() {
 
     gamePlay = true
     
-    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
-      arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
-    }
+    // for (let i = arrCharacter.length - 1; i >= 0; i-- ){
+    //   arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
+    // }
+    addVirusCharacters(redV)
+    addCharacter(whenuaH)
 
     window.addEventListener('scroll', docuScroll)
 
@@ -365,13 +370,19 @@ function init() {
         name.position = name.previousPosition
         name.previousPosition = holdingPosition
       }
-
-      if ((!booChaseHero) && (arrPossiblePosition.length > 1)) {
-        arrPossiblePosition = arrPossiblePosition.filter(positionValue => positionValue[0] !== name.previousPosition )
-        arrNewPosition = (arrPossiblePosition[Math.floor(Math.random() * arrPossiblePosition.length)])
+      const arrPossiblePositionWithoutPrior = arrOption.filter(element => ((element[1] === true)  && (element[0] !== name.previousPosition)) )
+      console.log('arrPossiblePositionWithoutPrior', arrPossiblePositionWithoutPrior)
+      if ((!booChaseHero) && (arrPossiblePositionWithoutPrior.length >= 1)) {
+        arrNewPosition = (arrPossiblePositionWithoutPrior[Math.floor(Math.random() * arrPossiblePositionWithoutPrior.length)])
         console.log(arrNewPosition, arrNewPosition[0])
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
+        console.log(name.name, 'New:', name.position,  'prev:', name.previousPosition )
+      // } else if (!booChaseHero){
+      //   arrNewPosition = arrPossiblePositionWithoutPrior
+      //   console.log(arrNewPosition, arrNewPosition[0], arrNewPosition[0][0])
+      //   name.previousPosition = name.position
+      //   name.position = arrNewPosition[0][0]
       } else if ((booChaseHero) && (arrPossiblePosition.length > 1)) {
         const xH = whenuaH.position % currentGridLayout.width
         const yH = Math.floor(whenuaH.position / currentGridLayout.width)
@@ -416,6 +427,33 @@ function init() {
             break
           default:
             break
+        }
+        console.log('HeroQuad: ', heroQuadrant)
+        let foundPref = false
+        arrPossiblePosition.forEach(element => {
+          console.log(element[2], heroQuadrant[0])
+          if (element[2] === heroQuadrant[0]){
+            console.log('First check: ', element)
+            arrNewPosition = element
+            foundPref = true
+          }
+        })
+        console.log(foundPref,  'prePos: ', name.previousPosition, 'curPos:', name.position)
+        if (!foundPref){
+          arrPossiblePosition.forEach(element => {
+            if (element[2] === heroQuadrant[1]){
+              arrNewPosition = element
+              foundPref = true
+              console.log('2nd check', arrNewPosition)
+            }
+          })
+        }
+        if ((!foundPref) && (arrPossiblePositionWithoutPrior.length === 1)){
+          arrNewPosition = arrPossiblePositionWithoutPrior[0]
+          console.log('3rd check: ', arrNewPosition, arrNewPosition[0][0])
+        } else if (!foundPref) {
+          arrNewPosition = [name.previousPosition, true]
+          console.log('Default to previous location: ',arrNewPosition)
         }
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
