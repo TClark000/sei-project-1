@@ -82,14 +82,14 @@ function init() {
   const gridAlpha = new gridLayout('alpha', 1, 12, [
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall', 
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
-    'wall', 'wall', 'emptySpace','wall','wall','wall','wall','secretPassage','wall','emptySpace','wall', 'wall',
+    'wall', 'wall', 'emptySpace','wall','wall','wall','wall','handBottle','wall','emptySpace','wall', 'wall',
     'cupboard','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','cupboard',
     'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
     'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
     'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
     'wall','wall','emptySpace','wall','emptySpace','wall','wall','emptySpace','wall','emptySpace','wall','wall',
     'cupboard','wall','emptySpace','wall','emptySpace','emptySpace','emptySpace','emptySpace','wall','emptySpace','wall','cupboard',
-    'wall', 'wall', 'emptySpace','wall','secretPassage','wall','wall','wall','wall','emptySpace','wall', 'wall',
+    'wall', 'wall', 'emptySpace','wall','handBottle','wall','wall','wall','wall','emptySpace','wall', 'wall',
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
   ])
@@ -106,7 +106,7 @@ function init() {
   //objects
   const wall = new Infrastructure('wall', 'wall', true, 'blue', null, null)
   // const wall = new Infrastructure('wall', 'wall', true, 'blue', 'url("../sei-project-1/images/wall.png") right / 100% repeat whitesmoke', "<a href='https://pngtree.com/so/green'>green png from pngtree.com</a>")
-  const secretPassage = new Infrastructure('secretPassage', 'wall', false, 'blue', 'url("../sei-project-1/images/bottle.png") right / 100% repeat whitesmoke', "<a href='https://pngtree.com/so/yellow'>yellow png from pngtree.com</a>")
+  const handBottle = new Infrastructure('handBottle', 'wall', false, 'blue', 'url("../sei-project-1/images/bottle.png") right / 100% repeat whitesmoke', "<a href='https://pngtree.com/so/yellow'>yellow png from pngtree.com</a>")
   const cupboard = new Infrastructure('cupboard', 'wall', true, 'blue', null, null)
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
@@ -134,7 +134,7 @@ function init() {
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
   let booChaseHero = false
-  const virusSpeedChaseHero = 300
+  const virusSpeedChaseHero = 350
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition + Math.floor(Math.random() * 2)
@@ -233,10 +233,15 @@ function init() {
     const removePosition = character.position
     cells[removePosition].classList.remove(character.name)
     let classList = cells[removePosition].classList.value
-    classList = classList.split(' ')    
+    classList = classList.split(' ')
+    console.log(classList)
     if (classList.length === 1){
-      cells[character.position].style.background = ''
-      cells[character.position].style.backgroundColor = getColor(currentGridLayout.design[character.position])
+      if (classList[0] === 'handBottle'){
+        cells[character.position].style.background = getImage(currentGridLayout.design[character.position])
+      } else {
+        cells[character.position].style.background = ''
+        cells[character.position].style.backgroundColor = getColor(currentGridLayout.design[character.position])
+      }
     } else {
       const classListObj = arrSingleCellObj(classList)
       if (classListObj.length >= 1){
@@ -599,6 +604,7 @@ function init() {
         charObj.vulnerable = false
       }
     })
+    booChaseHero = false
     spanSubTitle.textContent = 'Potion in effect & virus resistant!'
     spanSubTitle.style.fontWeight = 'bold'
     let counterPotion = 0
@@ -614,6 +620,7 @@ function init() {
           } else {
             charObj.vulnerable = true
           }
+          booChaseHero = true
         })
         spanSubTitle.textContent = starterSubtitle
         spanSubTitle.style.fontWeight = 'initial'
