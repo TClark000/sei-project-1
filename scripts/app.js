@@ -129,7 +129,7 @@ function init() {
   const starterGameCycle = 3
   const pointsVirusExpire = 200
   let gameDelayHeroExpire = false
-  let booChaseHero = false
+  let booChaseHero = true
 
   whenuaH.position = whenuaHStartPosition
   redV.position = virusStartPosition 
@@ -378,11 +378,6 @@ function init() {
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
         console.log(name.name, 'New:', name.position,  'prev:', name.previousPosition )
-      // } else if (!booChaseHero){
-      //   arrNewPosition = arrPossiblePositionWithoutPrior
-      //   console.log(arrNewPosition, arrNewPosition[0], arrNewPosition[0][0])
-      //   name.previousPosition = name.position
-      //   name.position = arrNewPosition[0][0]
       } else if ((booChaseHero) && (arrPossiblePosition.length > 1)) {
         const xH = whenuaH.position % currentGridLayout.width
         const yH = Math.floor(whenuaH.position / currentGridLayout.width)
@@ -448,12 +443,12 @@ function init() {
             }
           })
         }
-        if ((!foundPref) && (arrPossiblePositionWithoutPrior.length === 1)){
+        if (((foundPref) && (arrNewPosition[0] === name.previousPrePosition) && (arrPossiblePositionWithoutPrior.length === 1)) || ((!foundPref) && (arrPossiblePositionWithoutPrior.length === 1))){
           arrNewPosition = arrPossiblePositionWithoutPrior[0]
-          console.log('3rd check: ', arrNewPosition, arrNewPosition[0][0])
+          console.log('3rd check: ', arrNewPosition, arrPossiblePositionWithoutPrior[0], arrNewPosition[0])
         } else if (!foundPref) {
           arrNewPosition = [name.previousPosition, true]
-          console.log('Default to previous location: ',arrNewPosition)
+          console.log('Default to previous location: ', arrNewPosition)
         }
         name.previousPosition = name.position
         name.position = arrNewPosition[0]
