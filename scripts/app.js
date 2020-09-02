@@ -475,21 +475,30 @@ function init() {
     if (gamePlay && !gameDelayHeroExpire) {
       removeCharacter(param1)
 
-      const x = param1.position % currentGridLayout.width
-      const y = Math.floor(param1.position / currentGridLayout.width)
-
       switch (event.keyCode){
         case 39: // arrow right
-          if (x < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + 1]))) param1.position++
+          if (param1.position === 71 && currentGridLayout.name === 'alpha') {
+            (param1.position = 60)
+          } else if (param1.position === 83 && currentGridLayout.name === 'alpha') {
+            (param1.position = 72)
+          } else if (!getSolid(currentGridLayout.design[param1.position + 1])) {
+            param1.position++
+          }
           break
         case 37: // arrow left
-          if (x > 0 && !(getSolid(currentGridLayout.design[param1.position - 1]))) param1.position--
+          if (param1.position === 60 && currentGridLayout.name === 'alpha') {
+            (param1.position = 71)
+          } else if (param1.position === 72 && currentGridLayout.name === 'alpha') {
+            (param1.position = 83)
+          } else if (!getSolid(currentGridLayout.design[param1.position - 1])) {
+            param1.position--
+          }
           break
         case 38: //arrow up
-          if (y > 0 && !(getSolid(currentGridLayout.design[param1.position - currentGridLayout.width]))) param1.position -= currentGridLayout.width
+          if (!getSolid(currentGridLayout.design[param1.position - currentGridLayout.width])) param1.position -= currentGridLayout.width
           break
         case 40: //arrow down
-          if (y < (currentGridLayout.width - 1) && !(getSolid(currentGridLayout.design[param1.position + currentGridLayout.width]))) param1.position += currentGridLayout.width
+          if (!getSolid(currentGridLayout.design[param1.position + currentGridLayout.width])) param1.position += currentGridLayout.width
           break
         default:
           console.log('Try an arrow key.')
