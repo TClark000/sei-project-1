@@ -104,11 +104,11 @@ function init() {
     'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'emptySpace',  'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'wall', 'wall', 'emptySpace', 'wall', 
     'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall',  'emptySpace','emptySpace','emptySpace', 'wall', 
     'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall',
-    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
     'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 
     'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
     'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 
-    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
     'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall',
     'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall',  'emptySpace','emptySpace','emptySpace', 'wall', 
     'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'emptySpace',  'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'wall', 'wall', 'emptySpace', 'wall', 
@@ -218,6 +218,8 @@ function init() {
   function gridLayOutSettings(){
     console.log(currentGridLayout)
     if (currentGridLayout.name === 'alpha') {
+      grid.style.width = '600px'
+      grid.style.height = '600px'
       starterGameTime = 40
       gameCounter = starterGameTime
       booChaseHeroTime = 25
@@ -233,9 +235,11 @@ function init() {
       potion.design = 'aplha'
       potion.position = [22, 130]
     } else if (currentGridLayout.name === 'beta'){
-      starterGameTime = 120
+      grid.style.width = '690px'
+      grid.style.height = '690px'
+      starterGameTime = 140
       gameCounter = starterGameTime
-      booChaseHeroTime = 100
+      booChaseHeroTime = 110
       virusStartPosition = 241
       whenuaHStartPosition = 471
       const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
@@ -601,6 +605,8 @@ function init() {
             (param1.position = 60)
           } else if (param1.position === 83 && currentGridLayout.name === 'alpha') {
             (param1.position = 72)
+          } else if (param1.position === 275 && currentGridLayout.name === 'beta') {
+            (param1.position = 253)
           } else if (!getSolid(currentGridLayout.design[param1.position + 1])) {
             param1.position++
           }
@@ -610,6 +616,8 @@ function init() {
             (param1.position = 71)
           } else if (param1.position === 72 && currentGridLayout.name === 'alpha') {
             (param1.position = 83)
+          } else if (param1.position === 253 && currentGridLayout.name === 'beta') {
+            (param1.position = 275)
           } else if (!getSolid(currentGridLayout.design[param1.position - 1])) {
             param1.position--
           }
@@ -734,10 +742,12 @@ function init() {
           booChaseHero = true
         })
         arrCharacter.forEach(element => {
-          element.image = defaultColor + arrImageDetailSplit[1] + element.name.slice( 0, -1 ) + arrImageDetailSplit[2]
-          if (element.type === 'virus' && element.life === true){
-            cells[element.position].style.background  = element.image
-            cells[element.position].style.backgroundSize =  element.imageSize
+          if (element.type === 'virus'){
+            element.image = defaultColor + arrImageDetailSplit[1] + element.name.slice( 0, -1 ) + arrImageDetailSplit[2]
+            if (element.life === true){
+              cells[element.position].style.background  = element.image
+              cells[element.position].style.backgroundSize =  element.imageSize
+            }
           }
         })
 
@@ -826,7 +836,8 @@ function init() {
   console.log(arrGridObject)
   console.log(arrInfra)
   console.log(arrCharacter)
-  
+  console.log(divGrid)
+
   //listeners
   startButton.addEventListener('click', gameTimer)
   document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
