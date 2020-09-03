@@ -8,6 +8,7 @@ function init() {
   let spanPoints = document.querySelector('#points')
   let spanGameTime = document.querySelector('#gameTime')
   const spanGameCycle = document.querySelector('#gameCycle')
+  // const gridButton = document.querySelector('#gridButton')
   const startButton = document.querySelector('#startButton')
 
   //classes
@@ -120,7 +121,7 @@ function init() {
     'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall' 
   ])
 
-  const currentGridLayout = gridBeta
+  let currentGridLayout = gridBeta
   // console.log('gridLayoutName: ', currentGridLayout.name, 'width: ', currentGridLayout.width)
   const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
@@ -147,14 +148,13 @@ function init() {
   // earthMask png without eyes <a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>
   // potion virus image <a href='https://pngtree.com/so/2019-ncov-virus'>2019-ncov-virus png from pngtree.com</a>
   
-
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
   let starterGameTime = 40 //overall time allowed for the game, changes with gridlayout
   let gameCounter = starterGameTime
   let booChaseHeroTime = 25 // alpha grid
   const startPlacement = true //placement when game is loaded initially
-  let whenuaHStartPosition = 122 //aplha grid
+  let whenuaHStartPosition = 122 // alpha grid
   const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
   const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
   const defaultColor = 'whitesmoke'
@@ -212,50 +212,6 @@ function init() {
       cells[i].classList.add(currentGridLayout.design[i])
       cells[i].style.backgroundColor  = getColor(currentGridLayout.design[i])
       cells[i].style.background = getImage(currentGridLayout.design[i])
-    }
-  }
-
-  function gridLayOutSettings(){
-    console.log(currentGridLayout)
-    if (currentGridLayout.name === 'alpha') {
-      grid.style.width = '600px'
-      grid.style.height = '600px'
-      starterGameTime = 40
-      gameCounter = starterGameTime
-      booChaseHeroTime = 25
-      whenuaHStartPosition = 122
-      virusStartPosition = 65
-      arrCharacter.forEach(i => {
-        if (i.type === 'virus'){
-          i.position = virusStartPosition + Math.floor(Math.random() * 2)
-        } else if (i.type === 'hero'){
-          i.position = whenuaHStartPosition
-        }
-      })
-      potion.design = 'aplha'
-      potion.position = [22, 130]
-    } else if (currentGridLayout.name === 'beta'){
-      grid.style.width = '690px'
-      grid.style.height = '690px'
-      starterGameTime = 140
-      gameCounter = starterGameTime
-      booChaseHeroTime = 110
-      virusStartPosition = 241
-      whenuaHStartPosition = 471
-      const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-      const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-      const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
-      const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-      const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-      arrCharacter.forEach(i => {
-        if (i.type === 'virus'){
-          i.position = virusStartPosition + Math.floor(Math.random() * 2)
-        } else if (i.type === 'hero'){
-          i.position = whenuaHStartPosition
-        }
-      })
-      potion.design = 'beta'
-      potion.position = [72, 88, 164, 180, 348, 364, 440,456]
     }
   }
 
@@ -343,11 +299,6 @@ function init() {
     } else {
       const classListObj = arrSingleCellObj(classList)
       if (classListObj.length >= 1){
-        // if (classListObj.length > 1) {
-        //   console.log('classListObj: ', classListObj)
-        //   console.log(classListObj[0].name, ' wins image display')
-        // }
-        // console.log('classListObj: ', classListObj)
         cells[removePosition].style.backgroundColor  = classListObj[0].color
         cells[removePosition].style.background  = classListObj[0].image
         cells[removePosition].style.backgroundSize =  classListObj[0].imageSize
@@ -380,6 +331,7 @@ function init() {
     if (gamePlay) {
       return
     }
+    gamePlay = true
     refreshGridObjectVitamin(arrGridObject)
     addGridObjectPotion(arrGridObject)
 
@@ -398,12 +350,10 @@ function init() {
 
     addSecondHeroImage(whenuaH)
     
-    gamePlay = true
-    
     arrCharacter.forEach(i => {
       if (i.type === 'virus'){
         addVirusCharacters(i)
-        i.speed = virusSpeedChaseHero + Math.floor(Math.random * 800)
+        i.speed = Number(virusSpeedChaseHero) + Math.floor(Math.random() * 800)
       } else if (i.type === 'hero'){
         addCharacter(i)
       }
@@ -419,9 +369,11 @@ function init() {
       spanGameTime.textContent = gameCounter
       if (gameCounter === booChaseHeroTime) {
         booChaseHero = true
-        redV.speed = virusSpeedChaseHero 
-        greenV.speed = virusSpeedChaseHero 
-        blueV.speed = virusSpeedChaseHero
+        arrCharacter.forEach(i => {
+          if (i.type === 'virus'){
+            i.speed = virusSpeedChaseHero
+          }
+        })
       }
       if (Number(spanPoints.textContent) === gameHighestScore){
         gamePlay = false
@@ -706,62 +658,61 @@ function init() {
   }
 
   function potionPlay(){
-    arrCharacter.forEach(charObj => {
-      if (charObj.type === 'virus'){
-        charObj.vulnerable = true
-        console.log(charObj.name, charObj.vulnerable )
-      } else {
-        charObj.vulnerable = false
-      }
-    })
-    booChaseHero = false
-    spanSubTitle.textContent = 'Potion in effect & virus resistant!'
-    spanSubTitle.style.fontWeight = 'bold'
-
-    arrCharacter.forEach(element => {
-      if (element.type === 'virus' && element.life === true){
-        element.image = virusPotionColor + arrImageDetailSplit[1] + 'virusPotion' + arrImageDetailSplit[2]
-        cells[element.position].style.background  = element.image
-        cells[element.position].style.backgroundSize =  element.imageSize
-      }
-    })
-    
-    let counterPotion = 0
-    const potionTimerID = setInterval(function(){
-      counterPotion ++
-      spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
-      if (counterPotion >= 8){
-        console.log('potion bonus ends')
-        arrCharacter.forEach(charObj => {
-          if (charObj.type === 'virus'){
-            charObj.vulnerable = false
-            console.log(charObj.name, charObj.vulnerable )
-          } else {
-            charObj.vulnerable = true
-          }
-          booChaseHero = true
-        })
-        arrCharacter.forEach(element => {
-          if (element.type === 'virus'){
-            element.image = defaultColor + arrImageDetailSplit[1] + element.name.slice( 0, -1 ) + arrImageDetailSplit[2]
-            if (element.life === true){
-              cells[element.position].style.background  = element.image
-              cells[element.position].style.backgroundSize =  element.imageSize
-            }
-          }
-        })
-
-        if (gamePlay){
-          spanSubTitle.textContent = starterSubtitle
+    if (gamePlay) {
+      arrCharacter.forEach(charObj => {
+        if (charObj.type === 'virus'){
+          charObj.vulnerable = true
+          console.log(charObj.name, charObj.vulnerable )
+        } else {
+          charObj.vulnerable = false
         }
-        spanSubTitle.style.fontWeight = 'initial'
+      })
+      booChaseHero = false
+      spanSubTitle.textContent = 'Potion in effect & virus resistant!'
+      spanSubTitle.style.fontWeight = 'bold'
 
+      arrCharacter.forEach(element => {
+        if (element.type === 'virus' && element.life === true){
+          element.image = virusPotionColor + arrImageDetailSplit[1] + 'virusPotion' + arrImageDetailSplit[2]
+          cells[element.position].style.background  = element.image
+          cells[element.position].style.backgroundSize =  element.imageSize
+        }
+      })
+      
+      let counterPotion = 0
+      const potionTimerID = setInterval(function(){
+        counterPotion ++
+        spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
+        if (counterPotion >= 8){
+          console.log('potion bonus ends')
+          arrCharacter.forEach(charObj => {
+            if (charObj.type === 'virus'){
+              charObj.vulnerable = false
+              console.log(charObj.name, charObj.vulnerable )
+            } else {
+              charObj.vulnerable = true
+            }
+            booChaseHero = true
+          })
+          arrCharacter.forEach(element => {
+            if (element.type === 'virus'){
+              element.image = defaultColor + arrImageDetailSplit[1] + element.name.slice( 0, -1 ) + arrImageDetailSplit[2]
+              if (element.life === true){
+                cells[element.position].style.background  = element.image
+                cells[element.position].style.backgroundSize =  element.imageSize
+              }
+            }
+          })
 
-
-        clearInterval(potionTimerID)
-      }
-    }, 800)
-    console.log(arrCharacter)
+          if (gamePlay){
+            spanSubTitle.textContent = starterSubtitle
+          }
+          spanSubTitle.style.fontWeight = 'initial'
+          clearInterval(potionTimerID)
+        }
+      }, 800)
+      console.log(arrCharacter)
+  }
   }
 
   function virusExpire(character){
@@ -806,19 +757,86 @@ function init() {
     })
     const consumedVitamin = arrGridObject[1].position.length - vitaminTally.length
     spanSubTitle.textContent = 'Game Over | ' + consumedVitamin + ' fruit bowls | ' + virusTally + ' viruses' 
-    
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
       arrCharacter[i].life = true
       arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + Math.floor(Math.random() * 2)) : arrCharacter[i].position = whenuaHStartPosition
     }
-
     for (let i = arrTimerID.length - 1; i >= 0; i-- ){
       clearInterval(arrTimerID[i]['timerID'])
       arrTimerID.splice(i, 1)
     }
-
     window.addEventListener('scroll', docuScroll)
+  }
+
+  function gridLayOutSettings(){
+    console.log(currentGridLayout)
+
+    // if (event) {
+    //   currentGridLayout.name === 'alpha' ? currentGridLayout = gridBeta : currentGridLayout = gridAlpha
+
+    //   const gridCellCount = currentGridLayout.width * currentGridLayout.width
+    //   const cells = []
+    //   const arrInfra = []
+
+    //   createGrid()
+    //   addInfrastructure(currentGridLayout)
+    // }
+
+    if (currentGridLayout.name === 'alpha') {
+      grid.style.width = '600px'
+      grid.style.height = '600px'
+      cells.forEach(cell => {
+        cell.style.width = '8%'
+        cell.style.height = '8%'
+      })
+      starterGameTime = 40
+      gameCounter = starterGameTime
+      booChaseHeroTime = 25
+      whenuaHStartPosition = 122
+      virusStartPosition = 65
+      arrCharacter.forEach(i => {
+        if (i.type === 'virus'){
+          i.position = virusStartPosition + Math.floor(Math.random() * 2)
+        } else if (i.type === 'hero'){
+          i.position = whenuaHStartPosition
+        }
+      })
+      potion.design = 'alpha'
+      potion.position = [22, 130]
+    } else if (currentGridLayout.name === 'beta'){
+      grid.style.width = '690px'
+      grid.style.height = '690px'
+      cells.forEach(cell => {
+        cell.style.width = '4%'
+        cell.style.height = '4%'
+      })
+      starterGameTime = 140
+      gameCounter = starterGameTime
+      booChaseHeroTime = 110
+      virusStartPosition = 241
+      whenuaHStartPosition = 471
+      const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+      const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+      const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      arrCharacter.forEach(i => {
+        if (i.type === 'virus'){
+          i.position = virusStartPosition + Math.floor(Math.random() * 2)
+        } else if (i.type === 'hero'){
+          i.position = whenuaHStartPosition
+        }
+      })
+      potion.design = 'beta'
+      potion.position = [72, 88, 164, 180, 348, 364, 440, 456]
+    }
+
+    // if (event) {
+    //   addGridObjectVitamin()
+    //   addGridObjectPotion()
+    //   addCharacter(whenuaH)
+    // }
   }
 
   //execution
@@ -836,10 +854,10 @@ function init() {
   console.log(arrGridObject)
   console.log(arrInfra)
   console.log(arrCharacter)
-  console.log(divGrid)
 
   //listeners
   startButton.addEventListener('click', gameTimer)
+  // gridButton.addEventListener('click', gridLayOutSettings())
   document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
 
 }
