@@ -94,7 +94,33 @@ function init() {
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
   ])
 
-  const currentGridLayout = gridAlpha
+  const gridBeta = new gridLayout('beta', 1, 23, [
+    'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall',
+    'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace', 'emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall',  'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'emptySpace',  'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'wall', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall',  'emptySpace','emptySpace','emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
+    'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 
+    'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace',
+    'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace','emptySpace','emptySpace','wall', 'emptySpace', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 
+    'wall', 'emptySpace', 'handBottle', 'emptySpace','emptySpace','emptySpace','emptySpace','wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall','wall',  'emptySpace', 'emptySpace','emptySpace','emptySpace','handBottle', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall',
+    'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall',  'emptySpace','emptySpace','emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'emptySpace','emptySpace', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'emptySpace',  'wall', 'wall', 'wall', 'emptySpace','emptySpace','wall', 'wall', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace','emptySpace', 'wall', 'emptySpace','emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace', 'wall',
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall',  'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace','emptySpace','emptySpace', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'emptySpace', 'wall', 
+    'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace', 'emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 
+    'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall' 
+  ])
+
+  const currentGridLayout = gridBeta
   // console.log('gridLayoutName: ', currentGridLayout.name, 'width: ', currentGridLayout.width)
   const gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
@@ -112,9 +138,9 @@ function init() {
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
   
   const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center','180%', "<a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+  const redV1 = new Character('redV1', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV1 = new Character('greenV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV1 = new Character('blueV1', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
   // earth png "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>"
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
@@ -124,9 +150,11 @@ function init() {
 
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
-  const starterGameTime = 40 //overall time allowed for the game
+  let starterGameTime = 40 //overall time allowed for the game, changes with gridlayout
   let gameCounter = starterGameTime
-  const whenuaHStartPosition = 122
+  let booChaseHeroTime = 25 // alpha grid
+  const startPlacement = true //placement when game is loaded initially
+  let whenuaHStartPosition = 122 //aplha grid
   const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
   const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
   const defaultColor = 'whitesmoke'
@@ -134,8 +162,7 @@ function init() {
   const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
   const arrImageDetailSplit = ImageDetail.split('*')
 
-  const gamePlacement = true
-  const virusStartPosition = 65 //within a wall lair
+  let virusStartPosition = 65 //within a wall lair alpha
   let virusTally = 0
   let gamePlay = false
   const starterSubtitle = spanSubTitle.textContent
@@ -144,14 +171,6 @@ function init() {
   let gameDelayHeroExpire = false
   let booChaseHero = false
   const virusSpeedChaseHero = 350
-
-  whenuaH.position = whenuaHStartPosition
-  redV.position = virusStartPosition + Math.floor(Math.random() * 2)
-  greenV.position = virusStartPosition + Math.floor(Math.random() * 2)
-  blueV.position = virusStartPosition + Math.floor(Math.random() * 2)
-
-  console.log(arrInfra)
-  console.log(arrCharacter)
 
   //functions
   function createGrid(){
@@ -193,6 +212,46 @@ function init() {
       cells[i].classList.add(currentGridLayout.design[i])
       cells[i].style.backgroundColor  = getColor(currentGridLayout.design[i])
       cells[i].style.background = getImage(currentGridLayout.design[i])
+    }
+  }
+
+  function gridLayOutSettings(){
+    console.log(currentGridLayout)
+    if (currentGridLayout.name === 'alpha') {
+      starterGameTime = 40
+      gameCounter = starterGameTime
+      booChaseHeroTime = 25
+      whenuaHStartPosition = 122
+      virusStartPosition = 65
+      arrCharacter.forEach(i => {
+        if (i.type === 'virus'){
+          i.position = virusStartPosition + Math.floor(Math.random() * 2)
+        } else if (i.type === 'hero'){
+          i.position = whenuaHStartPosition
+        }
+      })
+      potion.design = 'aplha'
+      potion.position = [22, 130]
+    } else if (currentGridLayout.name === 'beta'){
+      starterGameTime = 120
+      gameCounter = starterGameTime
+      booChaseHeroTime = 100
+      virusStartPosition = 241
+      whenuaHStartPosition = 471
+      const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+      const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+      const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      arrCharacter.forEach(i => {
+        if (i.type === 'virus'){
+          i.position = virusStartPosition + Math.floor(Math.random() * 2)
+        } else if (i.type === 'hero'){
+          i.position = whenuaHStartPosition
+        }
+      })
+      potion.design = 'beta'
+      potion.position = [72, 88, 164, 180, 348, 364, 440,456]
     }
   }
 
@@ -255,7 +314,7 @@ function init() {
   }
 
   function addCharacter(character){
-    if (gamePlay || gamePlacement) {
+    if ((gamePlay && character.life) || startPlacement) {
       cells[character.position].classList.add(character.name)
       console.log('add/move Character: ', character.name)
       cells[character.position].style.backgroundColor  = character.color
@@ -326,6 +385,7 @@ function init() {
     spanGameCycle.textContent = starterGameCycle
     gameCounter = starterGameTime
     virusTally = 0
+    booChaseHero = false
 
     const gameHighestScore = determineGamePoints()
     console.log('Highest score available: ', gameHighestScore)
@@ -336,10 +396,15 @@ function init() {
     
     gamePlay = true
     
-    for (let i = arrCharacter.length - 1; i >= 0; i-- ){
-      arrCharacter[i].type === 'virus' ? (addVirusCharacters(arrCharacter[i])) : (addCharacter(arrCharacter[i]))
-    }
-    // comment out for statement above for testing
+    arrCharacter.forEach(i => {
+      if (i.type === 'virus'){
+        addVirusCharacters(i)
+        i.speed = virusSpeedChaseHero + Math.floor(Math.random * 800)
+      } else if (i.type === 'hero'){
+        addCharacter(i)
+      }
+    })
+    // comment out forEach statement above for testing
     // addVirusCharacters(redV) 
     // addCharacter(whenuaH)
 
@@ -348,13 +413,13 @@ function init() {
     arrTimerID[indexGameCycle]['timerID'] = setInterval(()=>{
       gameCounter --
       spanGameTime.textContent = gameCounter
-      if (gameCounter === 25) {
+      if (gameCounter === booChaseHeroTime) {
         booChaseHero = true
         redV.speed = virusSpeedChaseHero 
         greenV.speed = virusSpeedChaseHero 
         blueV.speed = virusSpeedChaseHero
       }
-      if (Number(spanPoints.textContent) === gameHighestScore && currentGridLayout.name === 'alpha'){
+      if (Number(spanPoints.textContent) === gameHighestScore){
         gamePlay = false
         spanTitle.textContent = 'Wow you won, with the highest the score and ' + virusTally + ' viruses!' 
         console.log('Wow you won!')
@@ -593,7 +658,7 @@ function init() {
             let counterGameDelayHeroExpire = 0
             const GameDelayHeroExpireTimerID = setInterval(function(){
               counterGameDelayHeroExpire ++
-              if (counterGameDelayHeroExpire >= 3){
+              if (counterGameDelayHeroExpire >= 3 && gamePlay){
                 console.log('expire delay')
                 gameDelayHeroExpire = false
                 spanSubTitle.textContent = starterSubtitle
@@ -646,7 +711,7 @@ function init() {
     spanSubTitle.style.fontWeight = 'bold'
 
     arrCharacter.forEach(element => {
-      if (element.type === 'virus'){
+      if (element.type === 'virus' && element.life === true){
         element.image = virusPotionColor + arrImageDetailSplit[1] + 'virusPotion' + arrImageDetailSplit[2]
         cells[element.position].style.background  = element.image
         cells[element.position].style.backgroundSize =  element.imageSize
@@ -668,10 +733,9 @@ function init() {
           }
           booChaseHero = true
         })
-
         arrCharacter.forEach(element => {
-          if (element.type === 'virus'){
-            element.image = defaultColor + arrImageDetailSplit[1] + element.name + arrImageDetailSplit[2]
+          element.image = defaultColor + arrImageDetailSplit[1] + element.name.slice( 0, -1 ) + arrImageDetailSplit[2]
+          if (element.type === 'virus' && element.life === true){
             cells[element.position].style.background  = element.image
             cells[element.position].style.backgroundSize =  element.imageSize
           }
@@ -697,21 +761,22 @@ function init() {
     virusTally++
     removeCharacter(character)
     character.position = virusStartPosition
-    cells[character.position].classList.add(character.name)
-    console.log(character.name.slice(0, -1 ))
-    spanSubTitle.textContent = 'The ' + (character.name.slice( 0, -1 ))  + ' virus expired, points added!'
+    cells[character.position].style.background = ''
+    cells[character.position].style.backgroundColor = getColor('wall')
+    console.log(character.name.slice(0, -2 ))
+    spanSubTitle.textContent = 'The ' + (character.name.slice( 0, -2 ))  + ' virus expired, points added!'
     spanSubTitle.style.fontWeight = 'bold'
     let counterVirusExpire = 0
     const virusExpiredTimerID = setInterval(function(){
       counterVirusExpire ++
       spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
-      if (counterVirusExpire >= 4){
+      if (counterVirusExpire >= 4 && gamePlay){
         spanSubTitle.textContent = starterSubtitle
         spanSubTitle.style.fontWeight = 'initial'
         clearInterval(virusExpiredTimerID )
       }
     }, 1200)
-
+    console.log(character)
   }
 
   function determineGamePoints(){
@@ -750,13 +815,17 @@ function init() {
 
   createGrid()
   addInfrastructure(currentGridLayout)
-  console.log(cells)
-  
+  gridLayOutSettings()
+
   addGridObjectVitamin()
   addGridObjectPotion(arrGridObject)
-  console.log(arrGridObject)
 
   addCharacter(whenuaH)
+
+  console.log(cells)
+  console.log(arrGridObject)
+  console.log(arrInfra)
+  console.log(arrCharacter)
   
   //listeners
   startButton.addEventListener('click', gameTimer)

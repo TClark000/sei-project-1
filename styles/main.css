@@ -51,8 +51,10 @@ p {
 .grid div{
   border: 1px solid grey;
   flex-grow: 1;
-  height: 8%;
-  width: 8%;
+  /* height: 8%;
+  width: 8%; */
+  height: 4%;
+  width: 4%;
 }
 
 .hidden {
