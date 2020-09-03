@@ -111,13 +111,15 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'papayawhip url("../sei-project-1/images/earth.png") no-repeat center','180%', "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>")
-  const redV = new Character('redV', 'virus', 0, 0, 0, 500,  true, 100, false,'lightpink', 'whitesmoke url("../sei-project-1/images/virusred.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-  const greenV = new Character('greenV', 'virus', 0, 0, 0, 900, true, 100, false, 'palegreen', 'whitesmoke url("../sei-project-1/images/virusgreen.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
-  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1200, true, 100, true, 'paleturquoise', 'whitesmoke url("../sei-project-1/images/virusblue.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center','180%', "<a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>")
+  const redV = new Character('redV', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+  const greenV = new Character('greenV', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
+  const blueV = new Character('blueV', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
 
+  // earth png "<a href='https://pngtree.com/so/earth-vector'>earth-vector png from pngtree.com</a>"
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
-  // bottle 
+  // earthMask png without eyes <a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>
+  // potion virus image <a href='https://pngtree.com/so/2019-ncov-virus'>2019-ncov-virus png from pngtree.com</a>
   
 
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
@@ -127,6 +129,11 @@ function init() {
   const whenuaHStartPosition = 122
   const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
   const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
+  const defaultColor = 'whitesmoke'
+  const virusPotionColor = '#f7e4e4'
+  const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
+  const arrImageDetailSplit = ImageDetail.split('*')
+
   const gamePlacement = true
   const virusStartPosition = 65 //within a wall lair
   let virusTally = 0
@@ -637,6 +644,15 @@ function init() {
     booChaseHero = false
     spanSubTitle.textContent = 'Potion in effect & virus resistant!'
     spanSubTitle.style.fontWeight = 'bold'
+
+    arrCharacter.forEach(element => {
+      if (element.type === 'virus'){
+        element.image = virusPotionColor + arrImageDetailSplit[1] + 'virusPotion' + arrImageDetailSplit[2]
+        cells[element.position].style.background  = element.image
+        cells[element.position].style.backgroundSize =  element.imageSize
+      }
+    })
+    
     let counterPotion = 0
     const potionTimerID = setInterval(function(){
       counterPotion ++
@@ -652,8 +668,22 @@ function init() {
           }
           booChaseHero = true
         })
-        spanSubTitle.textContent = starterSubtitle
+
+        arrCharacter.forEach(element => {
+          if (element.type === 'virus'){
+            element.image = defaultColor + arrImageDetailSplit[1] + element.name + arrImageDetailSplit[2]
+            cells[element.position].style.background  = element.image
+            cells[element.position].style.backgroundSize =  element.imageSize
+          }
+        })
+
+        if (gamePlay){
+          spanSubTitle.textContent = starterSubtitle
+        }
         spanSubTitle.style.fontWeight = 'initial'
+
+
+
         clearInterval(potionTimerID)
       }
     }, 800)
