@@ -94,7 +94,6 @@ function init() {
     'wall','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','wall',
     'wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall','wall', 'wall'
   ])
-
   const gridBeta = new gridLayout('beta', 1, 23, [
     'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall', 'wall',
     'wall', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'emptySpace', 'emptySpace', 'emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace','emptySpace', 'wall', 
@@ -122,7 +121,6 @@ function init() {
   ])
 
   let currentGridLayout = gridBeta
-  // console.log('gridLayoutName: ', currentGridLayout.name, 'width: ', currentGridLayout.width)
   let  gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
   const arrInfra = []
@@ -242,6 +240,7 @@ function init() {
     if (arrGridObject.length === 1){ // need better condition
       const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/fruit.png") no-repeat center', '40%', '1', "<a href='https://pngtree.com/so/fruits'>fruits png from pngtree.com</a>")
     }
+    arrGridObject[1].position = arrVitamin
     arrVitamin.forEach(i => {
       cells[i].classList.add(arrGridObject[1].name)
       cells[i].style.background  = arrGridObject[1].image
@@ -389,7 +388,7 @@ function init() {
       }
       if (Number(spanPoints.textContent) === gameHighestScore){
         gamePlay = false
-        spanTitle.textContent = 'Wow you won, with the highest the score and ' + virusTally + ' viruses!' 
+        spanTitle.textContent = 'Wow you won, with the highest score and ' + virusTally + ' viruses!' 
         console.log('Wow you won!')
         endGame()
         return
@@ -767,7 +766,7 @@ function init() {
       return (cell.classList.value).includes('vitamin')
     })
     const consumedVitamin = arrGridObject[1].position.length - vitaminTally.length
-    spanSubTitle.textContent = 'Game Over | ' + consumedVitamin + ' fruit bowls | ' + virusTally + ' viruses' 
+    spanSubTitle.textContent = '** Game Over | ' + consumedVitamin + ' fruit bowls and viruses vaporized ' + virusTally + ' **'
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
       arrCharacter[i].life = true
@@ -781,6 +780,8 @@ function init() {
   }
 
   function gridLayOutSettings(){
+    spanSubTitle.textContent = starterSubtitle
+    spanPoints.textContent = '0'
     if (event.type === 'click') {
       deleteGrid()
       currentGridLayout.name === 'alpha' ? currentGridLayout = gridBeta : currentGridLayout = gridAlpha
@@ -798,10 +799,14 @@ function init() {
         cell.style.height = '8%'
       })
       starterGameTime = 40
+      spanGameTime.textContent = starterGameTime
       gameCounter = starterGameTime
       booChaseHeroTime = 25
       whenuaHStartPosition = 122
       virusStartPosition = 65
+      if (arrCharacter.length > 4){
+        const removedCharacters = arrCharacter.splice(4,5)
+      }
       arrCharacter.forEach(i => {
         if (i.type === 'virus'){
           i.position = virusStartPosition + Math.floor(Math.random() * 2)
@@ -819,15 +824,18 @@ function init() {
         cell.style.height = '4%'
       })
       starterGameTime = 140
+      spanGameTime.textContent = starterGameTime
       gameCounter = starterGameTime
       booChaseHeroTime = 110
       virusStartPosition = 241
       whenuaHStartPosition = 471
-      const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
-      const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-      const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
-      const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-      const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      if (arrCharacter.length < 5){
+        const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
+        const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+        const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
+        const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+        const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+      }
       arrCharacter.forEach(i => {
         if (i.type === 'virus'){
           i.position = virusStartPosition + Math.floor(Math.random() * 2)
