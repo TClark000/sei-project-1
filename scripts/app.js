@@ -8,7 +8,7 @@ function init() {
   let spanPoints = document.querySelector('#points')
   let spanGameTime = document.querySelector('#gameTime')
   const spanGameCycle = document.querySelector('#gameCycle')
-  // const gridButton = document.querySelector('#gridButton')
+  const gridButton = document.querySelector('#gridButton')
   const startButton = document.querySelector('#startButton')
 
   //classes
@@ -123,7 +123,7 @@ function init() {
 
   let currentGridLayout = gridBeta
   // console.log('gridLayoutName: ', currentGridLayout.name, 'width: ', currentGridLayout.width)
-  const gridCellCount = currentGridLayout.width * currentGridLayout.width
+  let  gridCellCount = currentGridLayout.width * currentGridLayout.width
   const cells = []
   const arrInfra = []
   const arrCharacter = []
@@ -158,7 +158,7 @@ function init() {
   const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
   const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
   const defaultColor = 'whitesmoke'
-  const virusPotionColor = '#f7e4e4'
+  const virusPotionColor = '#ffff1a'
   const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
   const arrImageDetailSplit = ImageDetail.split('*')
 
@@ -180,6 +180,16 @@ function init() {
       cells.push(cell)
       grid.appendChild(cell)
     }
+  }
+
+  function deleteGrid(){
+    while (grid.firstChild) {
+      grid.removeChild(grid.firstChild)
+    }
+    cells.forEach(cell => {
+      cells.pop(cell)
+    })
+    cells.length = 0
   }
 
   function getColor(name){
@@ -229,12 +239,14 @@ function init() {
     arrVitamin = arrVitamin.filter(position => {
       return position !== whenuaHStartPosition
     })
-    const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/fruit.png") no-repeat center', '40%', '1', "<a href='https://pngtree.com/so/fruits'>fruits png from pngtree.com</a>")
+    if (arrGridObject.length === 1){ // need better condition
+      const vitamin = new GridObject('vitamin', 'points', currentGridLayout.name, arrVitamin, 1, 5, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/fruit.png") no-repeat center', '40%', '1', "<a href='https://pngtree.com/so/fruits'>fruits png from pngtree.com</a>")
+    }
     arrVitamin.forEach(i => {
-      cells[i].classList.add(vitamin.name)
-      cells[i].style.background  = vitamin.image
-      cells[i].style.backgroundSize  = vitamin.imageSize
-      cells[i].style.opacity  = vitamin.opacity
+      cells[i].classList.add(arrGridObject[1].name)
+      cells[i].style.background  = arrGridObject[1].image
+      cells[i].style.backgroundSize  = arrGridObject[1].imageSize
+      cells[i].style.opacity  = arrGridObject[1].opacity
     })
   }
 
@@ -550,7 +562,6 @@ function init() {
     // console.log(event.keyCode, param1, param2)
     if (gamePlay && !gameDelayHeroExpire) {
       removeCharacter(param1)
-
       switch (event.keyCode){
         case 39: // arrow right
           if (param1.position === 71 && currentGridLayout.name === 'alpha') {
@@ -712,7 +723,7 @@ function init() {
         }
       }, 800)
       console.log(arrCharacter)
-  }
+    }
   }
 
   function virusExpire(character){
@@ -770,18 +781,14 @@ function init() {
   }
 
   function gridLayOutSettings(){
-    console.log(currentGridLayout)
-
-    // if (event) {
-    //   currentGridLayout.name === 'alpha' ? currentGridLayout = gridBeta : currentGridLayout = gridAlpha
-
-    //   const gridCellCount = currentGridLayout.width * currentGridLayout.width
-    //   const cells = []
-    //   const arrInfra = []
-
-    //   createGrid()
-    //   addInfrastructure(currentGridLayout)
-    // }
+    if (event.type === 'click') {
+      deleteGrid()
+      currentGridLayout.name === 'alpha' ? currentGridLayout = gridBeta : currentGridLayout = gridAlpha
+      console.log('New Grid:', currentGridLayout)
+      gridCellCount = currentGridLayout.width * currentGridLayout.width   
+    }
+    createGrid()
+    addInfrastructure(currentGridLayout)
 
     if (currentGridLayout.name === 'alpha') {
       grid.style.width = '600px'
@@ -832,32 +839,24 @@ function init() {
       potion.position = [72, 88, 164, 180, 348, 364, 440, 456]
     }
 
-    // if (event) {
-    //   addGridObjectVitamin()
-    //   addGridObjectPotion()
-    //   addCharacter(whenuaH)
-    // }
+    addGridObjectVitamin()
+    addGridObjectPotion()
+    addCharacter(whenuaH)
+
+    console.log(cells)
+    console.log(arrGridObject)
+    console.log(arrInfra)
+    console.log(arrCharacter)
+    
   }
 
   //execution
 
-  createGrid()
-  addInfrastructure(currentGridLayout)
-  gridLayOutSettings()
-
-  addGridObjectVitamin()
-  addGridObjectPotion(arrGridObject)
-
-  addCharacter(whenuaH)
-
-  console.log(cells)
-  console.log(arrGridObject)
-  console.log(arrInfra)
-  console.log(arrCharacter)
+  gridLayOutSettings() //used to also toggle between grids
 
   //listeners
   startButton.addEventListener('click', gameTimer)
-  // gridButton.addEventListener('click', gridLayOutSettings())
+  gridButton.addEventListener('click', gridLayOutSettings)
   document.addEventListener('keyup', handleKeyup.bind(event, whenuaH))
 
 }
