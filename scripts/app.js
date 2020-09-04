@@ -136,7 +136,7 @@ function init() {
   const emptySpace = new Infrastructure('emptySpace', 'path' , false, 'whitesmoke', null, null)
   const trapFloor = new Infrastructure('trapfloor', 'path' , false, 'gray', null, null)
   
-  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center','180%', "<a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>")
+  const whenuaH = new Character('whenuaH', 'hero', 0, 0, 0, 1000, true, 100, true, 'aqua', 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center','185%', "<a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>")
   const redV1 = new Character('redV1', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
   const greenV1 = new Character('greenV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")
   const blueV1 = new Character('blueV1', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
@@ -145,6 +145,7 @@ function init() {
   // earthMask png "<a href='https://pngtree.com/so/earth-icons'>earth-icons png from pngtree.com</a>"
   // earthMask png without eyes <a href='https://pngtree.com/so/virus'>virus png from pngtree.com</a>
   // potion virus image <a href='https://pngtree.com/so/2019-ncov-virus'>2019-ncov-virus png from pngtree.com</a>
+  // earth Home safe & healthy <a href='https://pngtree.com/so/png'>png png from pngtree.com</a>
   
   const potion = new GridObject('potion', 'points', 'alpha', [22, 130], 20, 100, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/potion.png") no-repeat center', '80%', "<a href='https://pngtree.com/so/magic-clipart'>magic-clipart png from pngtree.com</a>")
 
@@ -155,6 +156,7 @@ function init() {
   let whenuaHStartPosition = 122 // alpha grid
   const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
   const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
+  const  whenuaHHome = 'whitesmoke url("../sei-project-1/images/earthHome.png") no-repeat center'
   const defaultColor = 'whitesmoke'
   const virusPotionColor = '#ffff1a'
   const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
@@ -776,10 +778,17 @@ function init() {
       clearInterval(arrTimerID[i]['timerID'])
       arrTimerID.splice(i, 1)
     }
+    whenuaH.image = whenuaHHome
+    whenuaH.imageSize = '100%'
+    cells[whenuaH.position].style.background  = whenuaH.image
+    cells[whenuaH.position].style.backgroundSize =  whenuaH.imageSize
     window.addEventListener('scroll', docuScroll)
   }
 
   function gridLayOutSettings(){
+    if (gamePlay) {
+      return
+    }
     spanSubTitle.textContent = starterSubtitle
     spanPoints.textContent = '0'
     if (event.type === 'click') {
@@ -833,8 +842,8 @@ function init() {
         const redV2 = new Character('redV2', 'virus', 0, 0, 0, 500,  true, 100, false,'whitesmoke', 'whitesmoke url("../sei-project-1/images/redV.png") no-repeat center','100%', "<a href='https://pngtree.com/so/object'>object png from pngtree.com</a>")
         const greenV2 = new Character('greenV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
         const blueV2 = new Character('blueV2', 'virus', 0, 0, 0, 1200, true, 100, true, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/blueV.png") no-repeat center','140%', "<a href='https://pngtree.com/so/viral'>viral png from pngtree.com</a>")
-        const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
-        const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/greenV.png") no-repeat center','90%', "<a href='https://pngtree.com/so/coronavirus'>coronavirus png from pngtree.com</a>")    
+        const purpleV1 = new Character('purpleV1', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/purpleV.png") no-repeat center','160%', "<a href='https://pngtree.com/so/drugs'>drugs png from pngtree.com</a>")    
+        const purpleV2 = new Character('purpleV2', 'virus', 0, 0, 0, 900, true, 100, false, 'whitesmoke', 'whitesmoke url("../sei-project-1/images/purpleV.png") no-repeat center','160%', "<a href='https://pngtree.com/so/drugs'>drugs png from pngtree.com</a>")    
       }
       arrCharacter.forEach(i => {
         if (i.type === 'virus'){
