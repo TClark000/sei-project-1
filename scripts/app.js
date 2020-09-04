@@ -155,9 +155,9 @@ function init() {
   let booChaseHeroTime = 25 // alpha grid
   const startPlacement = true //placement when game is loaded initially
   let whenuaHStartPosition = 122 // alpha grid
-  const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthMask.png") no-repeat center'
-  const  whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
-  const  whenuaHHome = 'whitesmoke url("../sei-project-1/images/earthHome.png") no-repeat center'
+  const whenuaHSecondImage = 'whitesmoke url("../sei-project-1/images/earthmask.png") no-repeat center'
+  const whenuaHFirstImage = 'whitesmoke url("../sei-project-1/images/earth.png") no-repeat center'
+  const whenuaHHome = 'whitesmoke url("../sei-project-1/images/earthHome.png") no-repeat center'
   const defaultColor = 'whitesmoke'
   const virusPotionColor = '#ffff1a'
   const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
