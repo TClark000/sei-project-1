@@ -162,6 +162,7 @@ function init() {
   const virusPotionColor = '#ffff1a'
   const ImageDetail = '* url("../sei-project-1/images/*.png") no-repeat center'
   const arrImageDetailSplit = ImageDetail.split('*')
+  let audioSrcPlay = '../sei-project-1/sounds/Blip.wav'
 
   let virusStartPosition = 65 //within a wall lair alpha
   let virusTally = 0
@@ -172,7 +173,7 @@ function init() {
   let gameDelayHeroExpire = false
   let booChaseHero = false
   const virusSpeedChaseHero = 350
-  let counterEndGameDelay = true
+  let counterPotion = 0
 
   //functions
   function createGrid(){
@@ -283,51 +284,43 @@ function init() {
       } else {
         whenuaH.image = whenuaHFirstImage
       }
+      whenuaH.imageSize = '185%'
       cells[character.position].style.background  = character.image
       cells[character.position].style.backgroundSize =  character.imageSize
     }, 300)
   }
 
   function addSoundPlay(){
-    const audioSrc = '../sei-project-1/sounds/Blip.wav'
     const soundPlayTitle = 'soundPlay'
-    const indexSoundPlay = addTimerObj(soundPlayTitle)
-    
-    audio.src = audioSrc
-
+    const indexSoundPlay = addTimerObj(soundPlayTitle)      
+    checkForPotionAndChase()
     arrTimerID[indexSoundPlay]['timerID'] = setInterval(()=>{
+      audio.src = audioSrcPlay
       audio.play()
-    },900)
+    },1200)
+  }
+
+  function checkForPotionAndChase(){
+    if (counterPotion > 0){
+      audioSrcPlay = '../sei-project-1/sounds/potionSound.wav'
+    } else if (booChaseHero){
+      audioSrcPlay = '../sei-project-1/sounds/Blop.wav'
+    } else {
+      audioSrcPlay = '../sei-project-1/sounds/Blip.wav'
+    }
+    window.setTimeout(checkForPotionAndChase, 100)
   }
 
   function addSoundEndGameGong(){
     const audioSrc = '../sei-project-1/sounds/endGameGong.wav'
     audio.src = audioSrc
-    if (counterEndGameDelay){
-      audio.play()
-      counterEndGameDelay = false
-    }
+    audio.play()
   }
 
   function addSoundEndGameTaDa(){
     const audioSrc = '../sei-project-1/sounds/endGameTaDa.wav'    
     audio.src = audioSrc
-    if (counterEndGameDelay){
-      audio.play()
-      counterEndGameDelay = false
-    }
-  }
-
-  function checkForDelay(){
-    if (counterEndGameDelay) {
-      console.log('Check callback flag')
-      window.setTimeout(checkForDelay, 3000)
-    } else {
-      for (let i = arrTimerID.length - 1; i >= 0; i-- ){
-        clearInterval(arrTimerID[i]['timerID'])
-        arrTimerID.splice(i, 1)
-      }
-    }
+    audio.play()
   }
 
   function addCharacter(character){
@@ -739,13 +732,14 @@ function init() {
           cells[element.position].style.backgroundSize =  element.imageSize
         }
       })
-      
-      let counterPotion = 0
+    
+      counterPotion = 0
       const potionTimerID = setInterval(function(){
         counterPotion ++
         spanSubTitle.style.display = (spanSubTitle.style.display === 'none' ? '' : 'none')
         if (counterPotion >= 8){
           console.log('potion bonus ends')
+          counterPotion = 0
           arrCharacter.forEach(charObj => {
             if (charObj.type === 'virus'){
               charObj.vulnerable = false
@@ -772,6 +766,7 @@ function init() {
           clearInterval(potionTimerID)
         }
       }, 800)
+      counterPotion = 0
       console.log(arrCharacter)
     }
   }
@@ -817,14 +812,17 @@ function init() {
       return (cell.classList.value).includes('vitamin')
     })
     const consumedVitamin = arrGridObject[1].position.length - vitaminTally.length
-    spanSubTitle.textContent = '** Game Over | ' + consumedVitamin + ' fruit bowls and viruses vaporized ' + virusTally + ' **'
+    spanSubTitle.textContent = '** Game Over | ' + consumedVitamin + ' fruit bowls and viruses vaporized: ' + virusTally + ' **'
     for (let i = arrCharacter.length - 1; i >= 0; i-- ){
       removeCharacter(arrCharacter[i])
       arrCharacter[i].life = true
       arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + Math.floor(Math.random() * 2)) : arrCharacter[i].position = whenuaHStartPosition
     }
 
-    checkForDelay()
+    for (let i = arrTimerID.length - 1; i >= 0; i-- ){
+      clearInterval(arrTimerID[i]['timerID'])
+      arrTimerID.splice(i, 1)
+    }
 
     whenuaH.image = whenuaHHome
     whenuaH.imageSize = '100%'
