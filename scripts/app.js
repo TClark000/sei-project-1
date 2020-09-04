@@ -287,7 +287,7 @@ function init() {
       whenuaH.imageSize = '185%'
       cells[character.position].style.background  = character.image
       cells[character.position].style.backgroundSize =  character.imageSize
-    }, 300)
+    }, 400)
   }
 
   function addSoundPlay(){
