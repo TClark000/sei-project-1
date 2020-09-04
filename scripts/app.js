@@ -10,6 +10,7 @@ function init() {
   const spanGameCycle = document.querySelector('#gameCycle')
   const gridButton = document.querySelector('#gridButton')
   const startButton = document.querySelector('#startButton')
+  const audio = document.querySelector('#audio')
 
   //classes
   class gridLayout {
@@ -171,6 +172,7 @@ function init() {
   let gameDelayHeroExpire = false
   let booChaseHero = false
   const virusSpeedChaseHero = 350
+  let counterEndGameDelay = true
 
   //functions
   function createGrid(){
@@ -286,6 +288,48 @@ function init() {
     }, 300)
   }
 
+  function addSoundPlay(){
+    const audioSrc = '../sei-project-1/sounds/Blip.wav'
+    const soundPlayTitle = 'soundPlay'
+    const indexSoundPlay = addTimerObj(soundPlayTitle)
+    
+    audio.src = audioSrc
+
+    arrTimerID[indexSoundPlay]['timerID'] = setInterval(()=>{
+      audio.play()
+    },900)
+  }
+
+  function addSoundEndGameGong(){
+    const audioSrc = '../sei-project-1/sounds/endGameGong.wav'
+    audio.src = audioSrc
+    if (counterEndGameDelay){
+      audio.play()
+      counterEndGameDelay = false
+    }
+  }
+
+  function addSoundEndGameTaDa(){
+    const audioSrc = '../sei-project-1/sounds/endGameTaDa.wav'    
+    audio.src = audioSrc
+    if (counterEndGameDelay){
+      audio.play()
+      counterEndGameDelay = false
+    }
+  }
+
+  function checkForDelay(){
+    if (counterEndGameDelay) {
+      console.log('Check callback flag')
+      window.setTimeout(checkForDelay, 3000)
+    } else {
+      for (let i = arrTimerID.length - 1; i >= 0; i-- ){
+        clearInterval(arrTimerID[i]['timerID'])
+        arrTimerID.splice(i, 1)
+      }
+    }
+  }
+
   function addCharacter(character){
     if ((gamePlay && character.life) || startPlacement) {
       cells[character.position].classList.add(character.name)
@@ -362,6 +406,7 @@ function init() {
     const indexGameCycle = addTimerObj(timerName)
 
     addSecondHeroImage(whenuaH)
+    addSoundPlay()
     
     arrCharacter.forEach(i => {
       if (i.type === 'virus'){
@@ -392,12 +437,14 @@ function init() {
         gamePlay = false
         spanTitle.textContent = 'Wow you won, with the highest score and ' + virusTally + ' viruses!' 
         console.log('Wow you won!')
+        addSoundEndGameTaDa()
         endGame()
         return
       }
       if ((gameCounter <= 0) || (!gamePlay)) {
         gamePlay = false
         console.log('Game time reached.')
+        addSoundEndGameGong()
         endGame()
       }
     }, 1000)
@@ -641,6 +688,8 @@ function init() {
           } else {
             gamePlay = false
             spanGameCycle.textContent = 'zero'
+            console.log('Game lives at zero')
+            addSoundEndGameGong()
             endGame()
           }
         } else if (((character.type === 'virus') && (character.vulnerable)) || ((arrCharacter[i].type === 'virus') && (arrCharacter[i].vulnerable))){
@@ -655,7 +704,7 @@ function init() {
     let classList = cells[currentPosition].classList.value
     classList = classList.split(' ')    
     const arrClassListObj = arrSingleCellObj(classList)
-    console.log('arrClassListObj: ', arrClassListObj)
+    // console.log('arrClassListObj: ', arrClassListObj)
     arrClassListObj.forEach(element => {
       if (element.type === 'points'){
         spanPoints.textContent = Number(spanPoints.textContent) + element.points
@@ -774,10 +823,9 @@ function init() {
       arrCharacter[i].life = true
       arrCharacter[i].type === 'virus' ? (arrCharacter[i].position = virusStartPosition + Math.floor(Math.random() * 2)) : arrCharacter[i].position = whenuaHStartPosition
     }
-    for (let i = arrTimerID.length - 1; i >= 0; i-- ){
-      clearInterval(arrTimerID[i]['timerID'])
-      arrTimerID.splice(i, 1)
-    }
+
+    checkForDelay()
+
     whenuaH.image = whenuaHHome
     whenuaH.imageSize = '100%'
     cells[whenuaH.position].style.background  = whenuaH.image
