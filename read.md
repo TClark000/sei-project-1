@@ -4,7 +4,7 @@
 
 As part of the *General Assembly Software Engineering Immersive* course our challenge was to use native js to write a grid game with DOM manipulation.  Choosing the eighty's pac-man arcade game as a source of inspiration I wrote the game 'Viral Mania!'.
 
-The is game is available to play via the GitHub link [Viral Mania](https://tclark000.github.io/sei-project-1/).
+The game is available to play via the GitHub link [Viral Mania](https://tclark000.github.io/sei-project-1/).
 
 Front End:
 - Javascript (ES5) 
