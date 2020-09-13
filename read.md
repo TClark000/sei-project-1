@@ -42,10 +42,7 @@ Hero character, game end:
 
 Virus Characters:
 
-<img src="images/greenV.png" alt="greenV" width="100"/>
-<img src="images/purpleV.png" alt="purpleV" width="100"/>
-<img src="images/redV.png" alt="redV" width="100"/>
-<img src="images/blueV.png" alt="blueV" width="100"/>
+<img src="images/greenV.png" alt="greenV" width="100"/><img src="images/purpleV.png" alt="purpleV" width="100"/><img src="images/redV.png" alt="redV" width="100"/><img src="images/blueV.png" alt="blueV" width="100"/>
 
 Virus character when the hero has consumed the potion (also has a yellow glow in the game):
 
