@@ -29,7 +29,7 @@ The hero character is a caricature of earth with a blinking mask:
 </video>
 -->
 
-![Alt Text]("heroCharacterMask.mp4.gif")
+![]("heroCharacterMask.gif")
 
 Fruit Bowl for points:  
 
