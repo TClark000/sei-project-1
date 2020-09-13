@@ -23,10 +23,13 @@ Dev Tools:
 I started by planning the [grids](Grids.numbers), one for initial play and the other that was more difficult.  The game was designed and tested with MacOS and Chrome, wide screen.  The more difficult grid is also harder to see and a increased scale would be an improvement here.
 
 The hero character is a caricature of earth with a blinking mask:
-
+<!---
 <video style="width:70%" controls>
   <source type="video/mp4" src="heroCharacterMask.mp4">
 </video>
+-->
+
+![Alt Text](heroCharacterMask.mp4.gif)
 
 Fruit Bowl for points:  
 
