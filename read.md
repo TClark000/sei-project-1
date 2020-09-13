@@ -58,7 +58,7 @@ The game has a time limit and the hero only 3 lives to play the grid.  If the he
 - the hero lives run out
 - all the fruit bowls, viruses and potions are consumed! This is a WIN!
 
-When a potion is consumed by the hero the virus image, glow yellow and there is an audio clip change.
+When a potion is consumed by the hero the virus image changes (shown above), glows yellow and there is an audio clip change.
 
 The blue virus __may__ not alway kill the hero - asymptomatic of course!
 
