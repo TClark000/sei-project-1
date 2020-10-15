@@ -7,13 +7,13 @@ As part of the *General Assembly Software Engineering Immersive* course our chal
 The game is available to play via the GitHub link [Viral Mania](https://tclark000.github.io/sei-project-1/).
 
 Front End:
-- Javascript (ES5) 
+- JavaScript (ES5) 
 - HTML 5 with HTML 5 audio
 - CSS
 
 Dev Tools:
 - VScode
-- Eslint
+- ESLint
 - Inspector/console logging
 - Git
 - GitHub
